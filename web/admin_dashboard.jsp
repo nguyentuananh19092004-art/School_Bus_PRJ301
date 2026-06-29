@@ -6,6 +6,6 @@
         <title>Admin Dashboard</title>
     </head>
     <body>
-        <h1>Bảng điều khiển Admin - Dashboard</h1>
+        <h1>Bảng điều khiển Admin - DDDDDDDashboard</h1>
     </body>
 </html>
