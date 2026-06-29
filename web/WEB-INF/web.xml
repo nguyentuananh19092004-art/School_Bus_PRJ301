@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    
+    <!-- Cấu hình Servlets cho Thành viên 4 (Luồng Điều phối & Admin) -->
+    <servlet>
+        <servlet-name>ScheduleServlet</servlet-name>
+        <servlet-class>controller.ScheduleServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DailyStatusServlet</servlet-name>
+        <servlet-class>controller.DailyStatusServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <servlet-class>controller.AdminDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminReplaceServlet</servlet-name>
+        <servlet-class>controller.AdminReplaceServlet</servlet-class>
+    </servlet>
+
+    <!-- URL Mappings -->
+    <servlet-mapping>
+        <servlet-name>ScheduleServlet</servlet-name>
+        <url-pattern>/ScheduleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DailyStatusServlet</servlet-name>
+        <url-pattern>/DailyStatusServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDashboardServlet</servlet-name>
+        <url-pattern>/AdminDashboardServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminReplaceServlet</servlet-name>
+        <url-pattern>/AdminReplaceServlet</url-pattern>
+    </servlet-mapping>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    
+    <welcome-file-list>
+        <welcome-file>admin_dashboard.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
