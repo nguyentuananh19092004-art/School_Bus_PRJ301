@@ -1,6 +1,6 @@
 package model;
 import java.sql.Date;
-
+///aa
 public class Schedule {
     private int scheduleID;
     private Date date;

@@ -1,0 +1,67 @@
+package controller;
+
+import dal.UserDAO;
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import model.User;
+
+@WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/change-password"})
+public class ChangePasswordServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect("doi_mat_khau.jsp");
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("userID") == null) {
+            response.sendRedirect("dang_nhap.jsp");
+            return;
+        }
+
+        int userID = (int) session.getAttribute("userID");
+        String oldPassword = request.getParameter("oldPassword");
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+
+        UserDAO uDao = new UserDAO();
+        User user = uDao.getUserById(userID);
+
+        if (user == null || !user.getPassword().equals(oldPassword)) {
+            request.setAttribute("errorMessage", "Mật khẩu cũ không chính xác.");
+            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            request.setAttribute("errorMessage", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
+            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            return;
+        }
+
+        String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$";
+        if (!newPassword.matches(passwordRegex)) {
+            request.setAttribute("errorMessage", "Mật khẩu phải từ 8 kí tự trở lên, bao gồm chữ in thường, in hoa, số và kí tự đặc biệt.");
+            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            return;
+        }
+
+        boolean success = uDao.updatePassword(userID, newPassword);
+        if (success) {
+            request.setAttribute("successMessage", "Đổi mật khẩu thành công!");
+            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+        } else {
+            request.setAttribute("errorMessage", "Đã có lỗi xảy ra. Vui lòng thử lại sau.");
+            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+        }
+    }
+}
