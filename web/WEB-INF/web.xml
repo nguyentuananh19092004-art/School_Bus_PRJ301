@@ -42,6 +42,10 @@
         <servlet-name>TechnicianDashboardServlet</servlet-name>
         <servlet-class>controller.TechnicianDashboardServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TechnicianScheduleServlet</servlet-name>
+        <servlet-class>controller.TechnicianScheduleServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ScheduleServlet</servlet-name>
         <url-pattern>/ScheduleServlet</url-pattern>
@@ -81,6 +85,10 @@
     <servlet-mapping>
         <servlet-name>TechnicianDashboardServlet</servlet-name>
         <url-pattern>/technician-dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TechnicianScheduleServlet</servlet-name>
+        <url-pattern>/tech-schedule</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
