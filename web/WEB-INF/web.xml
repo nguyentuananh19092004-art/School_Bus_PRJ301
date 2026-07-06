@@ -22,6 +22,10 @@
         <servlet-name>AdminInboxServlet</servlet-name>
         <servlet-class>controller.AdminInboxServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EmployeeInboxServlet</servlet-name>
+        <servlet-class>controller.EmployeeInboxServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ScheduleServlet</servlet-name>
         <url-pattern>/ScheduleServlet</url-pattern>
@@ -41,6 +45,10 @@
     <servlet-mapping>
         <servlet-name>AdminInboxServlet</servlet-name>
         <url-pattern>/admin-inbox</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmployeeInboxServlet</servlet-name>
+        <url-pattern>/employee-inbox</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
