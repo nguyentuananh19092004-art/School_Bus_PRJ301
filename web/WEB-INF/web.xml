@@ -26,6 +26,10 @@
         <servlet-name>EmployeeInboxServlet</servlet-name>
         <servlet-class>controller.EmployeeInboxServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EmployeeScheduleServlet</servlet-name>
+        <servlet-class>controller.EmployeeScheduleServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ScheduleServlet</servlet-name>
         <url-pattern>/ScheduleServlet</url-pattern>
@@ -49,6 +53,10 @@
     <servlet-mapping>
         <servlet-name>EmployeeInboxServlet</servlet-name>
         <url-pattern>/employee-inbox</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmployeeScheduleServlet</servlet-name>
+        <url-pattern>/employee-schedule</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
