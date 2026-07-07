@@ -2,18 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-<<<<<<< HEAD
         <group>
+            <file>file:/D:/PRJ/Asg_School_Bus/src/java/controller/ChangePasswordServlet.java</file>
             <file>file:/D:/PRJ/Asg_School_Bus/src/java/dal/DBContext.java</file>
+            <file>file:/D:/PRJ/Asg_School_Bus/src/java/controller/DailyStatusServlet.java</file>
+            <file>file:/D:/PRJ/Asg_School_Bus/src/java/dal/DashboardDAO.java</file>
+            <file>file:/D:/PRJ/Asg_School_Bus/src/java/dal/ScheduleDAO.java</file>
             <file>file:/D:/PRJ/Asg_School_Bus/web/admin_dashboard.jsp</file>
+            <file>file:/D:/PRJ/Asg_School_Bus/src/java/controller/AdminReplaceServlet.java</file>
             <file>file:/D:/PRJ/Asg_School_Bus/web/WEB-INF/ConnectDB.properties</file>
             <file>file:/D:/PRJ/Asg_School_Bus/web/index.html</file>
             <file>file:/D:/PRJ/Asg_School_Bus/web/WEB-INF/web.xml</file>
             <file>file:/D:/PRJ/Asg_School_Bus/src/java/controller/AdminDashboardServlet.java</file>
             <file>file:/D:/PRJ/Asg_School_Bus/src/java/model/Schedule.java</file>
         </group>
-=======
-        <group/>
->>>>>>> 18b1c4f635e248958c6885743eddbea5098756f7
     </open-files>
 </project-private>
