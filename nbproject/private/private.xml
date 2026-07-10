@@ -2,6 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/D:/PRJ/Asg_School_Bus/src/java/controller/ChangePasswordServlet.java</file>
             <file>file:/D:/PRJ/Asg_School_Bus/src/java/dal/DBContext.java</file>
@@ -16,5 +17,8 @@
             <file>file:/D:/PRJ/Asg_School_Bus/src/java/controller/AdminDashboardServlet.java</file>
             <file>file:/D:/PRJ/Asg_School_Bus/src/java/model/Schedule.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> f7c69e5281f02fe6f464b2c10864d85e3a2cc5e0
     </open-files>
 </project-private>
