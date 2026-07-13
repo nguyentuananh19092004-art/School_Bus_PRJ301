@@ -81,7 +81,10 @@ CREATE TABLE HocSinh (
     Email VARCHAR(100),
     DefaultStopID INT FOREIGN KEY REFERENCES Stops(StopID),
     DefaultRouteID INT FOREIGN KEY REFERENCES Routes(RouteID),
-    TrangThai NVARCHAR(20) DEFAULT N'Ngưng hoạt động'
+    TrangThai NVARCHAR(20) DEFAULT N'Ngưng hoạt động',
+    PendingStopID INT FOREIGN KEY REFERENCES Stops(StopID),
+    PendingRouteID INT FOREIGN KEY REFERENCES Routes(RouteID),
+    EffectiveDate DATE
 );
 
 -- 7. Bảng Schedules (Lịch chạy hàng ngày)

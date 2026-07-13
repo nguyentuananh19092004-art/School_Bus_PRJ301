@@ -1,44 +1,43 @@
 package controller;
 
 import dal.BusDAO;
+import model.Bus;
+import model.BusMaintenance;
+import java.io.IOException;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import model.BusMaintenance;
+import jakarta.servlet.http.HttpSession;
 
-@WebServlet(name = "BusMaintenanceHistoryServlet", urlPatterns = {"/BusMaintenanceHistoryServlet"})
+@WebServlet(name = "BusMaintenanceHistoryServlet", urlPatterns = {"/bus-maintenance-history"})
 public class BusMaintenanceHistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int busId = Integer.parseInt(request.getParameter("id"));
-        BusDAO busDao = new BusDAO();
-        request.setAttribute("bus", busDao.getBusById(busId));
-
-        List<BusMaintenance> maintenances = new ArrayList<>();
-        String sql = "SELECT * FROM BusMaintenances WHERE BusID = ? ORDER BY MaintenanceDate DESC, MaintenanceID DESC";
-        try (Connection conn = new dal.ConnectionProvider().getConnection();
-             PreparedStatement st = conn.prepareStatement(sql)) {
-            st.setInt(1, busId);
-            try (ResultSet rs = st.executeQuery()) {
-                while (rs.next()) {
-                    maintenances.add(new BusMaintenance(rs.getInt("MaintenanceID"), rs.getInt("BusID"), rs.getDate("MaintenanceDate"), rs.getString("Description"), rs.getTimestamp("CreatedAt")));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        HttpSession session = request.getSession();
+        if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
+            response.sendRedirect("dang_nhap.jsp");
+            return;
         }
 
-        request.setAttribute("maintenances", maintenances);
-        request.getRequestDispatcher("/bus_maintenance_history.jsp").forward(request, response);
+        try {
+            int busID = Integer.parseInt(request.getParameter("id"));
+            BusDAO busDAO = new BusDAO();
+            Bus bus = busDAO.getBusById(busID);
+            
+            if (bus != null) {
+                List<BusMaintenance> history = busDAO.getBusMaintenances(busID);
+                request.setAttribute("bus", bus);
+                request.setAttribute("history", history);
+                request.getRequestDispatcher("bus_maintenance_history.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("bus-list");
+            }
+        } catch (Exception e) {
+            response.sendRedirect("bus-list");
+        }
     }
 }

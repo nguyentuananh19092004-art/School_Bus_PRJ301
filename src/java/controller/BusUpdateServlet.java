@@ -1,67 +1,93 @@
 package controller;
 
 import dal.BusDAO;
+import model.Bus;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import model.Bus;
 
-@WebServlet(name = "BusUpdateServlet", urlPatterns = {"/BusUpdateServlet"})
+@WebServlet(name = "BusUpdateServlet", urlPatterns = {"/bus-update"})
 public class BusUpdateServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        BusDAO dao = new BusDAO();
-        Bus bus = dao.getBusById(id);
-        request.setAttribute("bus", bus);
-        request.getRequestDispatcher("/bus_form.jsp").forward(request, response);
+        String idRaw = request.getParameter("id");
+        try {
+            int id = Integer.parseInt(idRaw);
+            BusDAO dao = new BusDAO();
+            Bus bus = dao.getBusById(id);
+            request.setAttribute("bus", bus);
+            request.getRequestDispatcher("bus_form.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("bus-list");
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        int id = Integer.parseInt(request.getParameter("busID"));
-        String licensePlate = request.getParameter("licensePlate");
-        String capacityStr = request.getParameter("capacity");
-        String status = request.getParameter("status");
-        String error = null;
+        
+        try {
+            int busID = Integer.parseInt(request.getParameter("busID"));
+            String licensePlate = request.getParameter("licensePlate");
+            int capacity = Integer.parseInt(request.getParameter("capacity"));
+            String status = request.getParameter("status");
 
-        if (licensePlate == null || licensePlate.trim().isEmpty()) {
-            error = "Vui lòng nhập biển số xe.";
-        } else if (capacityStr == null || capacityStr.trim().isEmpty()) {
-            error = "Vui lòng nhập sức chứa.";
-        } else {
-            try {
-                int capacity = Integer.parseInt(capacityStr);
-                if (capacity != 7 && capacity != 9) {
-                    error = "Sức chứa chỉ được phép là 7 hoặc 9.";
-                } else {
-                    BusDAO dao = new BusDAO();
-                    if (dao.checkLicensePlateExist(licensePlate.trim(), id)) {
-                        error = "Biển số xe đã tồn tại.";
-                    } else {
-                        Bus bus = new Bus(id, licensePlate.trim(), capacity, status);
-                        if (dao.updateBus(bus)) {
-                            response.sendRedirect("BusListServlet");
-                            return;
-                        } else {
-                            error = "Không thể cập nhật xe.";
-                        }
-                    }
-                }
-            } catch (NumberFormatException e) {
-                error = "Sức chứa phải là số.";
+            BusDAO dao = new BusDAO();
+            if (dao.checkLicensePlateExist(licensePlate, busID)) {
+                request.setAttribute("error", "Biển số xe '" + licensePlate + "' đã được sử dụng bởi xe khác!");
+                request.setAttribute("bus", new Bus(busID, licensePlate, capacity, status));
+                request.getRequestDispatcher("bus_form.jsp").forward(request, response);
+                return;
             }
+
+            Bus b = new Bus(busID, licensePlate, capacity, status);
+            dao.updateBus(b);
+            
+            if ("Bảo dưỡng/Sửa chữa".equals(status)) {
+                notifyAdminForFutureSchedules(busID);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
 
-        BusDAO dao = new BusDAO();
-        request.setAttribute("bus", dao.getBusById(id));
-        request.setAttribute("error", error);
-        request.getRequestDispatcher("/bus_form.jsp").forward(request, response);
+        response.sendRedirect("bus-list");
+    }
+    
+    private void notifyAdminForFutureSchedules(int busID) {
+        dal.UserDAO userDAO = new dal.UserDAO();
+        java.util.List<model.User> admins = userDAO.getUsersByRole("ADMIN");
+        if (admins.isEmpty()) return;
+
+        dal.NotificationDAO notifDAO = new dal.NotificationDAO();
+        dal.BusDAO busDAO = new dal.BusDAO();
+        dal.ScheduleDAO scheduleDAO = new dal.ScheduleDAO();
+        
+        Bus bus = busDAO.getBusById(busID);
+        String licensePlate = (bus != null) ? bus.getLicensePlate() : String.valueOf(busID);
+        java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+
+        java.util.List<model.Schedule> allSchedules = scheduleDAO.getAllSchedules();
+        for (model.Schedule s : allSchedules) {
+            if (s.getBusID() == busID) {
+                if (s.getDate() != null && s.getDate().compareTo(today) >= 0 && "PENDING".equals(s.getStatus())) {
+                    long diffInMillies = s.getDate().getTime() - today.getTime();
+                    long diffInDays = java.util.concurrent.TimeUnit.DAYS.convert(diffInMillies, java.util.concurrent.TimeUnit.MILLISECONDS);
+                    if (diffInDays <= 2) {
+                        String ca = "TO_SCHOOL".equals(s.getDirection()) ? "Sáng" : "Chiều";
+                        String msg = "Xe " + licensePlate + " vừa báo bảo dưỡng. Lịch trình ngày " + s.getDate() + " (Ca " + ca + ") đã bị HỦY tự động. Vui lòng phân ca lại! |DATE:" + s.getDate() + "|";
+                        for (model.User admin : admins) {
+                            notifDAO.insertNotification(admin.getUsername(), msg);
+                        }
+                        scheduleDAO.deleteSchedule(s.getScheduleID());
+                    }
+                }
+            }
+        }
     }
 }

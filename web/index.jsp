@@ -1,9 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : Jul 7, 2026, 2:41:05 PM
-    Author     : Tanh
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -117,4 +111,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

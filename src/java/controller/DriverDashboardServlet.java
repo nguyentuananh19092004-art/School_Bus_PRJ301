@@ -70,4 +70,3 @@ public class DriverDashboardServlet extends HttpServlet {
         request.getRequestDispatcher("taixe_dashboard.jsp").forward(request, response);
     }
 }
-

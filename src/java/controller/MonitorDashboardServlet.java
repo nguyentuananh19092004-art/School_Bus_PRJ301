@@ -137,7 +137,7 @@ public class MonitorDashboardServlet extends HttpServlet {
                         }
                     } else {
                         List<HocSinh> stopStudents = assignedStudents.stream()
-                                .filter(hs -> hs.getDefaultStopID() == s.getStopID())
+                                .filter(hs -> hs.getDefaultStopID() != null && hs.getDefaultStopID() == s.getStopID())
                                 .collect(java.util.stream.Collectors.toList());
                         if ("TO_HOME".equals(activeSchedule.getDirection())) {
                             // Alighting stop: only show students who boarded at school

@@ -5,6 +5,7 @@ public class Bus {
     private String licensePlate;
     private int capacity;
     private String status;
+    private String description;
 
     public Bus() {
     }
@@ -14,6 +15,14 @@ public class Bus {
         this.licensePlate = licensePlate;
         this.capacity = capacity;
         this.status = status;
+    }
+
+    public Bus(int busID, String licensePlate, int capacity, String status, String description) {
+        this.busID = busID;
+        this.licensePlate = licensePlate;
+        this.capacity = capacity;
+        this.status = status;
+        this.description = description;
     }
 
     public int getBusID() {
@@ -46,5 +55,13 @@ public class Bus {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

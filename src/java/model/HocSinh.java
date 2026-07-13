@@ -6,51 +6,124 @@ public class HocSinh {
     private int lop;
     private String tenTK;
     private String matKhau;
-    private String email;
-    private int defaultStopID;
-    private int defaultRouteID;
+    private Integer defaultStopID;
+    private Integer defaultRouteID;
     private String trangThai;
+    private String email;
+    
+    // Pending fields for changing stop
+    private Integer pendingStopID;
+    private Integer pendingRouteID;
+    private java.sql.Date effectiveDate;
 
     public HocSinh() {
     }
 
-    public HocSinh(String maHocSinh, String tenHocSinh, int lop, String tenTK, String matKhau, String email, int defaultStopID, int defaultRouteID, String trangThai) {
+    public HocSinh(String maHocSinh, String tenHocSinh, int lop, String tenTK, String matKhau, Integer defaultStopID, Integer defaultRouteID, String trangThai, String email) {
         this.maHocSinh = maHocSinh;
         this.tenHocSinh = tenHocSinh;
         this.lop = lop;
         this.tenTK = tenTK;
         this.matKhau = matKhau;
-        this.email = email;
         this.defaultStopID = defaultStopID;
         this.defaultRouteID = defaultRouteID;
         this.trangThai = trangThai;
+        this.email = email;
     }
 
-    // Getter và Setter
-    public String getMaHocSinh() { return maHocSinh; }
-    public void setMaHocSinh(String maHocSinh) { this.maHocSinh = maHocSinh; }
+    public String getMaHocSinh() {
+        return maHocSinh;
+    }
 
-    public String getTenHocSinh() { return tenHocSinh; }
-    public void setTenHocSinh(String tenHocSinh) { this.tenHocSinh = tenHocSinh; }
+    public void setMaHocSinh(String maHocSinh) {
+        this.maHocSinh = maHocSinh;
+    }
 
-    public int getLop() { return lop; }
-    public void setLop(int lop) { this.lop = lop; }
+    public String getTenHocSinh() {
+        return tenHocSinh;
+    }
 
-    public String getTenTK() { return tenTK; }
-    public void setTenTK(String tenTK) { this.tenTK = tenTK; }
+    public void setTenHocSinh(String tenHocSinh) {
+        this.tenHocSinh = tenHocSinh;
+    }
 
-    public String getMatKhau() { return matKhau; }
-    public void setMatKhau(String matKhau) { this.matKhau = matKhau; }
+    public int getLop() {
+        return lop;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setLop(int lop) {
+        this.lop = lop;
+    }
 
-    public int getDefaultStopID() { return defaultStopID; }
-    public void setDefaultStopID(int defaultStopID) { this.defaultStopID = defaultStopID; }
+    public String getTenTK() {
+        return tenTK;
+    }
 
-    public int getDefaultRouteID() { return defaultRouteID; }
-    public void setDefaultRouteID(int defaultRouteID) { this.defaultRouteID = defaultRouteID; }
+    public void setTenTK(String tenTK) {
+        this.tenTK = tenTK;
+    }
 
-    public String getTrangThai() { return trangThai; }
-    public void setTrangThai(String trangThai) { this.trangThai = trangThai; }
+    public String getMatKhau() {
+        return matKhau;
+    }
+
+    public void setMatKhau(String matKhau) {
+        this.matKhau = matKhau;
+    }
+
+    public Integer getDefaultStopID() {
+        return defaultStopID;
+    }
+
+    public void setDefaultStopID(Integer defaultStopID) {
+        this.defaultStopID = defaultStopID;
+    }
+
+    public Integer getDefaultRouteID() {
+        return defaultRouteID;
+    }
+
+    public void setDefaultRouteID(Integer defaultRouteID) {
+        this.defaultRouteID = defaultRouteID;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Integer getPendingStopID() {
+        return pendingStopID;
+    }
+
+    public void setPendingStopID(Integer pendingStopID) {
+        this.pendingStopID = pendingStopID;
+    }
+
+    public Integer getPendingRouteID() {
+        return pendingRouteID;
+    }
+
+    public void setPendingRouteID(Integer pendingRouteID) {
+        this.pendingRouteID = pendingRouteID;
+    }
+
+    public java.sql.Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(java.sql.Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
 }

@@ -1,40 +1,56 @@
 package controller;
 
 import dal.StopDAO;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.math.BigDecimal;
+import jakarta.servlet.http.HttpSession;
 import model.Stop;
 
-@WebServlet(name = "StopAddServlet", urlPatterns = {"/StopAddServlet"})
+@WebServlet(name = "StopAddServlet", urlPatterns = {"/add-stop"})
 public class StopAddServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String stopName = request.getParameter("stopName");
-        String address = request.getParameter("address");
-        String latitude = request.getParameter("latitude");
-        String longitude = request.getParameter("longitude");
-
-        StopDAO dao = new StopDAO();
-        if (dao.checkStopNameExist(stopName)) {
-            request.setAttribute("error", "Tên điểm đón đã tồn tại.");
-        } else if (dao.checkStopLocationExist(new BigDecimal(latitude), new BigDecimal(longitude))) {
-            request.setAttribute("error", "Điểm đón tại tọa độ này đã tồn tại.");
-        } else {
-            Stop stop = new Stop();
-            stop.setStopName(stopName);
-            stop.setAddress(address);
-            stop.setLatitude(latitude);
-            stop.setLongitude(longitude);
-            dao.insertStop(stop);
+        
+        HttpSession session = request.getSession();
+        if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
+            response.sendRedirect("dang_nhap.jsp");
+            return;
         }
 
-        response.sendRedirect("RouteManagementServlet");
+        try {
+            int routeID = Integer.parseInt(request.getParameter("routeID"));
+            String stopName = request.getParameter("stopName");
+            String address = request.getParameter("address");
+            double lat = Double.parseDouble(request.getParameter("latitude"));
+            double lng = Double.parseDouble(request.getParameter("longitude"));
+            String estimatedTime = request.getParameter("estimatedTime");
+            String returnTime = request.getParameter("returnTime");
+
+            StopDAO stopDAO = new StopDAO();
+            
+            // Create stop
+            Stop newStop = new Stop(0, stopName, address, lat, lng);
+            int stopID = stopDAO.insertStop(newStop);
+
+            if (stopID > 0) {
+                // Determine order. Usually add before the last stop (the school).
+                // Or just append it. Let's just append it for simplicity.
+                int maxOrder = stopDAO.getMaxStopOrder(routeID);
+                stopDAO.addStopToRoute(routeID, stopID, maxOrder + 1, estimatedTime, returnTime);
+            }
+
+            response.sendRedirect("route-management?routeID=" + routeID);
+            
+        } catch (Exception e) {
+            System.out.println("Error adding stop: " + e.getMessage());
+            response.sendRedirect("route-management?error=1");
+        }
     }
 }

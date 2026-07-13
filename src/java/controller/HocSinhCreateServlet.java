@@ -36,7 +36,7 @@ public class HocSinhCreateServlet extends HttpServlet {
         }
 
         HocSinhDAO dao = new HocSinhDAO();
-        HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, email, 0, 0, trangThai);
+        HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, null, null, trangThai, email);
 
         if (dao.getHocSinhByMa(maHocSinh) != null) {
             request.setAttribute("error", "Mã học sinh đã tồn tại!");

@@ -1,36 +1,91 @@
 package controller;
 
 import dal.HocSinhDAO;
-import dal.StudentLeaveDAO;
+import dal.NotificationDAO;
+import model.HocSinh;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet(name = "ParentActionServlet", urlPatterns = {"/parent-action"})
 public class ParentActionServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getParameter("action");
-        String maHS = request.getParameter("maHocSinh");
-        HocSinhDAO hsDao = new HocSinhDAO();
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        if (session.getAttribute("userRole") == null || !"phuhuynh".equals(session.getAttribute("userRole"))) {
+            response.sendRedirect("dang_nhap.jsp");
+            return;
+        }
 
-        if ("activate".equals(action)) {
-            int routeID = Integer.parseInt(request.getParameter("routeID"));
-            int stopID = Integer.parseInt(request.getParameter("stopID"));
-            hsDao.activateService(maHS, stopID, routeID);
-        } 
-        else if ("leave".equals(action)) {
-            String leaveDate = request.getParameter("leaveDate");
-            StudentLeaveDAO leaveDao = new StudentLeaveDAO();
-            leaveDao.insertLeave(maHS, leaveDate);
-        } 
-        else if ("stopService".equals(action)) {
-            // Nghiệp vụ: Cập nhật dừng dịch vụ
-            hsDao.stopService(maHS);
+        String action = request.getParameter("action");
+        String username = (String) session.getAttribute("username");
+        HocSinhDAO hsDAO = new HocSinhDAO();
+        HocSinh student = hsDAO.getHocSinhByTenTK(username);
+        
+        if (student == null) {
+            response.sendRedirect("dang_nhap.jsp");
+            return;
+        }
+
+        if ("report_absent".equals(action)) {
+            if (student.getDefaultStopID() == null) {
+                response.sendRedirect("parent-dashboard?msg=no_active_bus");
+                return;
+            }
+            dal.StudentLeaveDAO leaveDAO = new dal.StudentLeaveDAO();
+            boolean success = leaveDAO.insertLeave(student.getMaHocSinh(), new java.sql.Date(System.currentTimeMillis()));
+            response.sendRedirect("parent-dashboard?msg=" + (success ? "leave_success" : "duplicate_leave"));
+            return;
+        } else if ("change_stop".equals(action)) {
+            if (student.getPendingStopID() != null) {
+                response.sendRedirect("parent-dashboard?msg=limit_exceeded");
+                return;
+            }
+            String stopRoute = request.getParameter("stopRoute");
+            if (stopRoute != null && stopRoute.contains("_")) {
+                String[] parts = stopRoute.split("_");
+                int stopID = Integer.parseInt(parts[0]);
+                int routeID = Integer.parseInt(parts[1]);
+                
+                if (student.getDefaultStopID() != null && student.getDefaultStopID() == stopID && student.getDefaultRouteID() == routeID) {
+                    response.sendRedirect("parent-dashboard");
+                    return;
+                }
+                
+                // set pending change for tomorrow
+                java.time.LocalDate tomorrow = java.time.LocalDate.now().plusDays(1);
+                hsDAO.setPendingStopChange(student.getMaHocSinh(), stopID, routeID, java.sql.Date.valueOf(tomorrow));
+                response.sendRedirect("parent-dashboard?msg=change_pending");
+                return;
+            }
+        } else if ("mark_read".equals(action)) {
+            int notifID = Integer.parseInt(request.getParameter("notifID"));
+            NotificationDAO notifDAO = new NotificationDAO();
+            notifDAO.markAsRead(notifID);
+        } else if ("stop_service".equals(action)) {
+            if (student.getPendingStopID() != null) {
+                response.sendRedirect("parent-dashboard?msg=limit_exceeded");
+                return;
+            }
+            java.time.LocalDate tomorrow = java.time.LocalDate.now().plusDays(1);
+            hsDAO.stopService(student.getMaHocSinh(), java.sql.Date.valueOf(tomorrow));
+            response.sendRedirect("parent-dashboard?msg=stop_pending");
+            return;
+        } else if ("report_leave".equals(action)) {
+            String leaveDateStr = request.getParameter("leaveDate");
+            if (leaveDateStr != null && !leaveDateStr.isEmpty()) {
+                dal.StudentLeaveDAO leaveDAO = new dal.StudentLeaveDAO();
+                boolean success = leaveDAO.insertLeave(student.getMaHocSinh(), java.sql.Date.valueOf(leaveDateStr));
+                response.sendRedirect("parent-dashboard?msg=" + (success ? "leave_success" : "duplicate_leave"));
+                return;
+            }
         }
 
         response.sendRedirect("parent-dashboard");

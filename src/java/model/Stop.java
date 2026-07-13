@@ -1,18 +1,23 @@
 package model;
 
-import java.math.BigDecimal;
+import java.sql.Time;
 
 public class Stop {
     private int stopID;
     private String stopName;
     private String address;
-    private BigDecimal latitude;
-    private BigDecimal longitude;
+    private double latitude;
+    private double longitude;
+
+    // Fields for RouteStops join
+    private int stopOrder;
+    private Time estimatedTime;
+    private Time returnTime;
 
     public Stop() {
     }
 
-    public Stop(int stopID, String stopName, String address, BigDecimal latitude, BigDecimal longitude) {
+    public Stop(int stopID, String stopName, String address, double latitude, double longitude) {
         this.stopID = stopID;
         this.stopName = stopName;
         this.address = address;
@@ -20,51 +25,27 @@ public class Stop {
         this.longitude = longitude;
     }
 
-    public int getStopID() {
-        return stopID;
-    }
+    public int getStopID() { return stopID; }
+    public void setStopID(int stopID) { this.stopID = stopID; }
 
-    public void setStopID(int stopID) {
-        this.stopID = stopID;
-    }
+    public String getStopName() { return stopName; }
+    public void setStopName(String stopName) { this.stopName = stopName; }
 
-    public String getStopName() {
-        return stopName;
-    }
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
-    public void setStopName(String stopName) {
-        this.stopName = stopName;
-    }
+    public double getLatitude() { return latitude; }
+    public void setLatitude(double latitude) { this.latitude = latitude; }
 
-    public String getAddress() {
-        return address;
-    }
+    public double getLongitude() { return longitude; }
+    public void setLongitude(double longitude) { this.longitude = longitude; }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    public int getStopOrder() { return stopOrder; }
+    public void setStopOrder(int stopOrder) { this.stopOrder = stopOrder; }
 
-    public BigDecimal getLatitude() {
-        return latitude;
-    }
+    public Time getEstimatedTime() { return estimatedTime; }
+    public void setEstimatedTime(Time estimatedTime) { this.estimatedTime = estimatedTime; }
 
-    public void setLatitude(BigDecimal latitude) {
-        this.latitude = latitude;
-    }
-
-    public void setLatitude(String value) {
-        this.latitude = value == null || value.trim().isEmpty() ? null : new BigDecimal(value.trim());
-    }
-
-    public BigDecimal getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(BigDecimal longitude) {
-        this.longitude = longitude;
-    }
-
-    public void setLongitude(String value) {
-        this.longitude = value == null || value.trim().isEmpty() ? null : new BigDecimal(value.trim());
-    }
+    public Time getReturnTime() { return returnTime; }
+    public void setReturnTime(Time returnTime) { this.returnTime = returnTime; }
 }

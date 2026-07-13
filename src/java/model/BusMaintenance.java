@@ -4,7 +4,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class BusMaintenance {
-    private int maintenanceID;
     private int busID;
     private Date maintenanceDate;
     private String description;
@@ -13,20 +12,11 @@ public class BusMaintenance {
     public BusMaintenance() {
     }
 
-    public BusMaintenance(int maintenanceID, int busID, Date maintenanceDate, String description, Timestamp createdAt) {
-        this.maintenanceID = maintenanceID;
+    public BusMaintenance(int busID, Date maintenanceDate, String description, Timestamp createdAt) {
         this.busID = busID;
         this.maintenanceDate = maintenanceDate;
         this.description = description;
         this.createdAt = createdAt;
-    }
-
-    public int getMaintenanceID() {
-        return maintenanceID;
-    }
-
-    public void setMaintenanceID(int maintenanceID) {
-        this.maintenanceID = maintenanceID;
     }
 
     public int getBusID() {
