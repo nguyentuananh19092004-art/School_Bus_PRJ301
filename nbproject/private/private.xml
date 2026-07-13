@@ -3,20 +3,4 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/web/hocsinh_list.jsp</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/controller/ParentDashboardServlet.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/dal/RunSQL.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/dal/StudentLeaveDAO.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/web/phuhuynh_dashboard.jsp</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/model/HocSinh.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/model/Bus.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/util/EmailUtil.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/web/WEB-INF/ConnectDB.properties</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/controller/HocSinhListServlet.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/dal/DBContext.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/web/dang_nhap.jsp</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/controller/ParentActionServlet.java</file>
-            <file>file:/C:/Users/ADMIN/OneDrive/Desktop/SU26/PRJ301/Assignment/School_Bus_PRJ301/src/java/dal/HocSinhDAO.java</file>
-        </group>
-    </open-files>
-</project-private>
+
