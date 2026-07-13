@@ -104,4 +104,23 @@ public class StopDAO extends DBContext {
             return false;
         }
     }
+
+    public List<Stop> getStopsByRoute(int routeID) {
+        List<Stop> list = new ArrayList<>();
+        String sql = "SELECT s.* FROM Stops s " +
+                     "JOIN RouteStops rs ON s.StopID = rs.StopID " +
+                     "WHERE rs.RouteID = ? " +
+                     "ORDER BY rs.StopOrder ASC";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, routeID);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new Stop(rs.getInt("StopID"), rs.getString("StopName"), rs.getString("Address"), rs.getBigDecimal("Latitude"), rs.getBigDecimal("Longitude")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

@@ -1,5 +1,6 @@
 package dal;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,9 @@ import java.util.List;
 import model.Bus;
 
 public class BusDAO extends DBContext {
+    public Connection getConnection() {
+        return connection;
+    }
 
     public List<Bus> getAllBus() {
         List<Bus> list = new ArrayList<>();
@@ -161,6 +165,67 @@ public class BusDAO extends DBContext {
             try (ResultSet rs = st.executeQuery()) {
                 while (rs.next()) {
                     list.add(new Bus(rs.getInt("BusID"), rs.getString("LicensePlate"), rs.getInt("Capacity"), rs.getString("Status")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean insertBusMaintenance(int busID, java.sql.Date date, String description) {
+        String sql = "INSERT INTO BusMaintenances (BusID, MaintenanceDate, Description) VALUES (?, ?, ?)";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, busID);
+            st.setDate(2, date);
+            st.setString(3, description);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean deleteBusMaintenance(int busID, java.sql.Date date) {
+        String sql = "DELETE FROM BusMaintenances WHERE BusID = ? AND MaintenanceDate = ?";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, busID);
+            st.setDate(2, date);
+            return st.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean hasFutureSchedule(int busID) {
+        String sql = "SELECT 1 FROM Schedules WHERE (BusID = ? OR ReplacementBusID = ?) AND Date >= CAST(GETDATE() AS DATE)";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, busID);
+            st.setInt(2, busID);
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<model.BusMaintenance> getBusMaintenances(int busID) {
+        List<model.BusMaintenance> list = new ArrayList<>();
+        String sql = "SELECT * FROM BusMaintenances WHERE BusID = ? ORDER BY CreatedAt DESC";
+        try (PreparedStatement st = connection.prepareStatement(sql)) {
+            st.setInt(1, busID);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    list.add(new model.BusMaintenance(
+                            rs.getInt("MaintenanceID"),
+                            rs.getInt("BusID"),
+                            rs.getDate("MaintenanceDate"),
+                            rs.getString("Description"),
+                            rs.getTimestamp("CreatedAt")
+                    ));
                 }
             }
         } catch (SQLException e) {

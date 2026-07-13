@@ -25,6 +25,10 @@ public class RouteDAO extends DBContext {
         return list;
     }
 
+    public List<Route> getAllRoutes() {
+        return getAllRoute();
+    }
+
     public Route getRouteById(int id) {
         String sql = "SELECT * FROM Routes WHERE RouteID = ?";
         try (PreparedStatement st = connection.prepareStatement(sql)) {
