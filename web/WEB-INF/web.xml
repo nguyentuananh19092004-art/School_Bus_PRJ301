@@ -1,99 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    <!-- Cấu hình Servlets cho Thành viên 4 (Luồng Điều phối & Admin) -->
-    <servlet>
-        <servlet-name>ScheduleServlet</servlet-name>
-        <servlet-class>controller.ScheduleServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DailyStatusServlet</servlet-name>
-        <servlet-class>controller.DailyStatusServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AdminDashboardServlet</servlet-name>
-        <servlet-class>controller.AdminDashboardServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AdminReplaceServlet</servlet-name>
-        <servlet-class>controller.AdminReplaceServlet</servlet-class>
-    </servlet>
-    <!-- URL Mappings -->
-    <servlet>
-        <servlet-name>AdminInboxServlet</servlet-name>
-        <servlet-class>controller.AdminInboxServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>EmployeeInboxServlet</servlet-name>
-        <servlet-class>controller.EmployeeInboxServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>EmployeeScheduleServlet</servlet-name>
-        <servlet-class>controller.EmployeeScheduleServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LeaveRequestServlet</servlet-name>
-        <servlet-class>controller.LeaveRequestServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TechnicianActionServlet</servlet-name>
-        <servlet-class>controller.TechnicianActionServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TechnicianDashboardServlet</servlet-name>
-        <servlet-class>controller.TechnicianDashboardServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>TechnicianScheduleServlet</servlet-name>
-        <servlet-class>controller.TechnicianScheduleServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ScheduleServlet</servlet-name>
-        <url-pattern>/ScheduleServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DailyStatusServlet</servlet-name>
-        <url-pattern>/DailyStatusServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminDashboardServlet</servlet-name>
-        <url-pattern>/AdminDashboardServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminReplaceServlet</servlet-name>
-        <url-pattern>/AdminReplaceServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminInboxServlet</servlet-name>
-        <url-pattern>/admin-inbox</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EmployeeInboxServlet</servlet-name>
-        <url-pattern>/employee-inbox</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EmployeeScheduleServlet</servlet-name>
-        <url-pattern>/employee-schedule</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>LeaveRequestServlet</servlet-name>
-        <url-pattern>/leave-request</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TechnicianActionServlet</servlet-name>
-        <url-pattern>/technician-action</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TechnicianDashboardServlet</servlet-name>
-        <url-pattern>/technician-dashboard</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>TechnicianScheduleServlet</servlet-name>
-        <url-pattern>/tech-schedule</url-pattern>
-    </servlet-mapping>
+    <display-name>SchoolBusSystem</display-name>
+    
+    <!-- Cấu hình thời gian sống của Session (30 phút) -->
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+    
+    <!-- Cấu hình tên miền bắt buộc cho Email -->
+    <context-param>
+        <param-name>ALLOWED_EMAIL_DOMAIN</param-name>
+        <param-value>@gmail.com, @yahoo.com, @fpt.edu.vn</param-value>
+    </context-param>
+    
+    <!-- Cấu hình trang khởi động mặc định (khi truy cập thư mục gốc /) -->
     <welcome-file-list>
-        <welcome-file>admin_dashboard.jsp</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>dang_nhap.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
