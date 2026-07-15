@@ -21,6 +21,8 @@ public class VerifyOTPServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("xac_thuc_otp.jsp").forward(request, response);
     }
 
@@ -30,23 +32,27 @@ public class VerifyOTPServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         String inputOtp = request.getParameter("otpCode");
         HttpSession session = request.getSession();
         String sessionOtp = (String) session.getAttribute("otp");
 
         if (sessionOtp == null) {
-            response.sendRedirect("quen_mat_khau.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("quen_mat_khau.jsp");
             return;
         }
 
         if (inputOtp != null && inputOtp.equals(sessionOtp)) {
             // Xác thực thành công
             session.setAttribute("verifiedUser", true);
-            response.sendRedirect("dat_lai_mat_khau.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dat_lai_mat_khau.jsp");
         } else {
             // Xác thực thất bại
             request.setAttribute("errorMessage", "Mã OTP không hợp lệ hoặc đã hết hạn.");
-            request.getRequestDispatcher("xac_thuc_otp.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("xac_thuc_otp.jsp").forward(request, response);
         }
     }
 }

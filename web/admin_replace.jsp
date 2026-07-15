@@ -7,6 +7,7 @@
 <%@page import="model.User"%>
 <%@page import="model.Schedule"%>
 <%
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -58,7 +59,8 @@
          </div>
  
          <div class="card p-4">
-             <form action="admin-replace" method="POST">
+             <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="admin-replace" method="POST">
                  <input type="hidden" name="role" value="<%= leaveUser.getRole() %>">
                  <input type="hidden" name="leaveDate" value="<%= request.getAttribute("leaveDate") %>">
                  <%
@@ -70,7 +72,7 @@
                      
                      if (isTech) {
                  %>
-                 <table class="table table-bordered table-striped align-middle">
+                 <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-bordered table-striped align-middle">
                      <thead class="table-dark">
                          <tr>
                              <th>ID Ca</th>
@@ -114,7 +116,7 @@
                      </tbody>
                  </table>
                  <% } else { %>
-                 <table class="table table-bordered table-striped align-middle">
+                 <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-bordered table-striped align-middle">
                      <thead class="table-dark">
                          <tr>
                              <th>ID Chuyến</th>

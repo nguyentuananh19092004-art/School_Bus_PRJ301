@@ -35,9 +35,11 @@ public class MonitorDashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"giamthi".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -164,6 +166,7 @@ public class MonitorDashboardServlet extends HttpServlet {
             }
         }
 
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("giamthi_dashboard.jsp").forward(request, response);
     }
 }

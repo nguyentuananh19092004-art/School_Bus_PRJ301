@@ -30,10 +30,13 @@ public class ParentActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         request.setCharacterEncoding("UTF-8");
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"phuhuynh".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -43,22 +46,26 @@ public class ParentActionServlet extends HttpServlet {
         HocSinh student = hsDAO.getHocSinhByTenTK(username);
         
         if (student == null) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
         if ("report_absent".equals(action)) {
             if (student.getDefaultStopID() == null) {
-                response.sendRedirect("parent-dashboard?msg=no_active_bus");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard?msg=no_active_bus");
                 return;
             }
             dal.StudentLeaveDAO leaveDAO = new dal.StudentLeaveDAO();
             boolean success = leaveDAO.insertLeave(student.getMaHocSinh(), new java.sql.Date(System.currentTimeMillis()));
-            response.sendRedirect("parent-dashboard?msg=" + (success ? "leave_success" : "duplicate_leave"));
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard?msg=" + (success ? "leave_success" : "duplicate_leave"));
             return;
         } else if ("change_stop".equals(action)) {
             if (student.getPendingStopID() != null) {
-                response.sendRedirect("parent-dashboard?msg=limit_exceeded");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard?msg=limit_exceeded");
                 return;
             }
             String stopRoute = request.getParameter("stopRoute");
@@ -68,14 +75,16 @@ public class ParentActionServlet extends HttpServlet {
                 int routeID = Integer.parseInt(parts[1]);
                 
                 if (student.getDefaultStopID() != null && student.getDefaultStopID() == stopID && student.getDefaultRouteID() == routeID) {
-                    response.sendRedirect("parent-dashboard");
+                    // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard");
                     return;
                 }
                 
                 // set pending change for tomorrow
                 java.time.LocalDate tomorrow = java.time.LocalDate.now().plusDays(1);
                 hsDAO.setPendingStopChange(student.getMaHocSinh(), stopID, routeID, java.sql.Date.valueOf(tomorrow));
-                response.sendRedirect("parent-dashboard?msg=change_pending");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard?msg=change_pending");
                 return;
             }
         } else if ("mark_read".equals(action)) {
@@ -84,23 +93,27 @@ public class ParentActionServlet extends HttpServlet {
             notifDAO.markAsRead(notifID);
         } else if ("stop_service".equals(action)) {
             if (student.getPendingStopID() != null) {
-                response.sendRedirect("parent-dashboard?msg=limit_exceeded");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard?msg=limit_exceeded");
                 return;
             }
             java.time.LocalDate tomorrow = java.time.LocalDate.now().plusDays(1);
             hsDAO.stopService(student.getMaHocSinh(), java.sql.Date.valueOf(tomorrow));
-            response.sendRedirect("parent-dashboard?msg=stop_pending");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard?msg=stop_pending");
             return;
         } else if ("report_leave".equals(action)) {
             String leaveDateStr = request.getParameter("leaveDate");
             if (leaveDateStr != null && !leaveDateStr.isEmpty()) {
                 dal.StudentLeaveDAO leaveDAO = new dal.StudentLeaveDAO();
                 boolean success = leaveDAO.insertLeave(student.getMaHocSinh(), java.sql.Date.valueOf(leaveDateStr));
-                response.sendRedirect("parent-dashboard?msg=" + (success ? "leave_success" : "duplicate_leave"));
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("parent-dashboard?msg=" + (success ? "leave_success" : "duplicate_leave"));
                 return;
             }
         }
 
+        // Chuyển hướng (Redirect) người dùng đến trang khác
         response.sendRedirect("parent-dashboard");
     }
 }

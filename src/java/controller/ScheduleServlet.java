@@ -234,11 +234,13 @@ public class ScheduleServlet extends HttpServlet {
 
             String paramStr = "&selectedDate=" + date.toString() + "&direction=" + direction + "&routeID=" + routeID + "&busID=" + busID + "&driverID=" + driverID + "&monitorID=" + monitorID;
 
+            // 1. Kiểm tra không cho phép tạo lịch trình cho ngày trong quá khứ
             if (scheduleDate.isBefore(today)) {
                 response.sendRedirect("ScheduleServlet?msg=past_date" + paramStr);
                 return;
             }
 
+            // 2. Kiểm tra nếu tạo lịch cho ngày hôm nay, phải đảm bảo chưa quá giờ khởi hành quy định
             if (scheduleDate.isEqual(today)) {
                 if ("TO_SCHOOL".equals(direction) && now.getHour() >= 6) {
                     response.sendRedirect("ScheduleServlet?msg=timeout_school" + paramStr);
@@ -253,10 +255,12 @@ public class ScheduleServlet extends HttpServlet {
             ScheduleDAO dao = new ScheduleDAO();
             dal.UserDAO userDAO = new dal.UserDAO();
             
+            // 3. Kiểm tra xem Tài xế có đang trong thời gian nghỉ phép đã được duyệt hay không
             if (userDAO.isLeaveApproved(driverID, date)) {
                 response.sendRedirect("ScheduleServlet?msg=driver_on_leave" + paramStr);
                 return;
             }
+            // 4. Kiểm tra xem Giám thị có đang trong thời gian nghỉ phép đã được duyệt hay không
             if (userDAO.isLeaveApproved(monitorID, date)) {
                 response.sendRedirect("ScheduleServlet?msg=monitor_on_leave" + paramStr);
                 return;

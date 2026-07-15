@@ -181,7 +181,8 @@
                 <% } %>
             </div>
 
-            <form action="ForgotPasswordServlet" method="POST">
+            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="ForgotPasswordServlet" method="POST">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="username" name="username" placeholder="Tên đăng nhập" value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>" required>
                     <label for="username">Tên đăng nhập</label>

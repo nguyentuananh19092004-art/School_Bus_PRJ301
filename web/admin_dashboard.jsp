@@ -5,7 +5,9 @@
     Cung cấp các liên kết truy cập nhanh đến các chức năng quản lý, phân ca, và hòm thư duyệt phép.
 --%>
 <%
-    // Kiểm tra đăng nhập
+    // Kiểm tra đăng nhập: Chặn các truy cập trái phép không có quyền 'admin'
+    // Nếu không phải admin, đá văng về trang đăng nhập
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -69,6 +71,8 @@
     <!-- Main Content -->
     <div class="container my-5">
         <h2 class="fw-bold mb-4">Tổng quan hệ thống</h2>
+        
+        <!-- Section 1: Các thẻ thống kê (Stats Cards) - Lấy số liệu từ DB qua Controller -->
         <div class="row g-4">
             <!-- Card 1 -->
             <div class="col-md-3">
@@ -136,7 +140,9 @@
             </div>
         </div>
 
+        <!-- Section 2: Chức năng quản lý và Thông báo -->
         <div class="row mt-5">
+            <!-- Bảng liên kết quản lý nhanh -->
             <div class="col-md-7">
                 <div class="card dashboard-card h-100">
                     <div class="card-header bg-white border-0 pt-4 pb-0">
@@ -162,10 +168,12 @@
                 </div>
             </div>
             
+            <!-- Bảng thông báo khẩn cấp (Sự cố xe, Hủy chuyến) -->
             <div class="col-md-5">
                 <div class="card dashboard-card h-100 border-start border-danger border-5">
                     <div class="card-body">
                         <h5 class="fw-bold text-danger mb-3"><i class="bi bi-bell-fill me-2"></i>Thông báo khẩn cấp</h5>
+                        <%-- Parse danh sách thông báo được nhúng từ Servlet --%>
                         <% java.util.List<model.Notification> notifications = (java.util.List<model.Notification>) request.getAttribute("notifications"); %>
                         <% if (notifications != null && !notifications.isEmpty()) { %>
                             <div class="list-group" style="max-height: 300px; overflow-y: auto;">
@@ -197,21 +205,24 @@
                                         <% if (!n.isRead()) { %>
                                         <div class="d-flex justify-content-end mt-1 gap-3">
                                             <% if (!targetDate.isEmpty()) { %>
-                                                <form action="AdminDashboardServlet" method="POST" class="m-0">
+                                                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="AdminDashboardServlet" method="POST" class="m-0">
                                                     <input type="hidden" name="action" value="redirect_to_schedule">
                                                     <input type="hidden" name="targetDate" value="<%= targetDate %>">
                                                     <input type="hidden" name="notifID" value="<%= n.getNotifID() %>">
                                                     <button type="submit" class="btn btn-sm btn-danger py-0"><i class="bi bi-calendar-plus"></i> Phân ca lại</button>
                                                 </form>
                                             <% } else if (schId != -1) { %>
-                                                <form action="AdminDashboardServlet" method="POST" class="m-0">
+                                                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="AdminDashboardServlet" method="POST" class="m-0">
                                                     <input type="hidden" name="action" value="redirect_to_schedule">
                                                     <input type="hidden" name="scheduleID" value="<%= schId %>">
                                                     <input type="hidden" name="notifID" value="<%= n.getNotifID() %>">
                                                     <button type="submit" class="btn btn-sm btn-danger py-0"><i class="bi bi-arrow-repeat"></i> Đổi xe ngay</button>
                                                 </form>
                                             <% } %>
-                                            <form action="AdminDashboardServlet" method="POST" class="m-0">
+                                            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="AdminDashboardServlet" method="POST" class="m-0">
                                                 <input type="hidden" name="action" value="mark_read">
                                                 <input type="hidden" name="notifID" value="<%= n.getNotifID() %>">
                                                 <button type="submit" class="btn btn-sm btn-link text-decoration-none p-0 text-secondary">Đã đọc</button>

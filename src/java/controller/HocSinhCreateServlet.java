@@ -60,6 +60,7 @@ public class HocSinhCreateServlet extends HttpServlet {
         HocSinhDAO dao = new HocSinhDAO();
         HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, null, null, trangThai, email);
 
+        // 1. Kiểm tra xem Mã học sinh đã tồn tại chưa
         if (dao.getHocSinhByMa(maHocSinh) != null) {
             request.setAttribute("error", "Mã học sinh đã tồn tại!");
             request.setAttribute("hs", hs);
@@ -67,6 +68,7 @@ public class HocSinhCreateServlet extends HttpServlet {
             request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
             return;
         }
+        // 2. Kiểm tra xem Tên tài khoản đã tồn tại chưa
         if (dao.getHocSinhByTenTK(tenTK) != null) {
             request.setAttribute("error", "Tên tài khoản đã tồn tại!");
             request.setAttribute("hs", hs);
@@ -75,6 +77,7 @@ public class HocSinhCreateServlet extends HttpServlet {
             return;
         }
 
+        // 3. Kiểm tra xem Email đã tồn tại trong hệ thống (Học sinh hoặc User) chưa
         if (dao.checkEmailExist(email, null)) {
             request.setAttribute("error", "Email '" + email + "' đã được sử dụng bởi một tài khoản khác!");
             request.setAttribute("hs", hs);
@@ -83,6 +86,7 @@ public class HocSinhCreateServlet extends HttpServlet {
             return;
         }
 
+        // 4. Kiểm tra xem Email có thuộc tên miền (domain) hợp lệ của trường hay không
         String allowedDomain = getServletContext().getInitParameter("ALLOWED_EMAIL_DOMAIN");
         if (!util.EmailUtil.isValidDomain(email, allowedDomain)) {
             request.setAttribute("error", "Email bắt buộc phải có tên miền thuộc danh sách: " + allowedDomain);
@@ -92,6 +96,7 @@ public class HocSinhCreateServlet extends HttpServlet {
             return;
         }
 
+        // 5. Nếu dữ liệu hợp lệ, thêm học sinh vào CSDL
         dao.insertHocSinh(hs);
 
         response.sendRedirect("hocsinh-list");

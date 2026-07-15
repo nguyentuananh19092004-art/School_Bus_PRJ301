@@ -33,8 +33,11 @@ public class HocSinhListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HocSinhDAO dao = new HocSinhDAO();
+        
+        // 1. Lấy toàn bộ danh sách học sinh từ database
         List<HocSinh> list = dao.getAllHocSinh();
         
+        // 2. Lấy danh sách tuyến đường để mapping mã tuyến đường (RouteID) sang mã hiển thị (RouteCode)
         RouteDAO routeDAO = new RouteDAO();
         List<Route> routes = routeDAO.getAllRoutes();
         Map<Integer, String> routeMap = new HashMap<>();

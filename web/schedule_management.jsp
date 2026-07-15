@@ -9,10 +9,13 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    // 1. Chặn người dùng không có quyền truy cập, đá văng về màn hình đăng nhập
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
     }
+    
+    // 2. Lấy dữ liệu từ Servlet truyền xuống để hiển thị
     List<User> drivers = (List<User>) request.getAttribute("drivers");
     List<User> monitors = (List<User>) request.getAttribute("monitors");
     List<Bus> buses = (List<Bus>) request.getAttribute("buses");
@@ -96,6 +99,7 @@
 </nav>
 
 <div class="container">
+    <%-- 3. Xử lý hiển thị thông báo trả về từ Servlet (dựa trên URL parameter "msg") --%>
     <% if("success".equals(request.getParameter("msg"))) { %>
         <div class="alert alert-success alert-dismissible fade show"><button type="button" class="btn-close" data-bs-dismiss="alert"></button>Thêm phân ca thành công!</div>
     <% } else if("bus_changed".equals(request.getParameter("msg"))) { %>
@@ -143,6 +147,7 @@
     <% } %>
 
     <% 
+       // 4. Bóc tách các tham số liên quan đến lỗi form trước đó để restore dữ liệu form (nếu có)
        String errDir = request.getParameter("direction");
        String errRoute = request.getParameter("routeID");
        String errBus = request.getParameter("busID");
@@ -189,7 +194,7 @@
 
     <% if (!isPastDate) { %>
     <div class="row mb-4">
-        <!-- Form Phân ca Đến trường -->
+        <!-- 5. Form Phân ca Chiều Đi (Từ Nhà Đến Trường) -->
         <div class="col-md-6">
             <div class="card shadow-sm border-primary">
                 <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
@@ -247,7 +252,7 @@
             </div>
         </div>
 
-        <!-- Form Phân ca Về nhà -->
+        <!-- 6. Form Phân ca Chiều Về (Từ Trường Về Nhà) -->
         <div class="col-md-6">
             <div class="card shadow-sm border-success">
                 <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
@@ -311,7 +316,7 @@
     <% } %>
 
     <div class="row">
-        <!-- Danh sách ca đã phân -->
+        <!-- 7. Bảng danh sách các lịch trình phân ca đã chốt / đang chờ của ngày được chọn -->
         <div class="col-md-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-white">

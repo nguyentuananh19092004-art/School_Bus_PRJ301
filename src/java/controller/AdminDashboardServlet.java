@@ -25,11 +25,14 @@ public class AdminDashboardServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        
+        // 1. Kiểm tra quyền truy cập: Chỉ cho phép tài khoản Admin vào trang này
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
             response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
+        // 2. Lấy số liệu thống kê tổng quát từ cơ sở dữ liệu
         DashboardDAO dao = new DashboardDAO();
         int totalStudents = dao.countTable("HocSinh");
         int totalBuses = dao.countTable("Buses");
@@ -41,10 +44,12 @@ public class AdminDashboardServlet extends HttpServlet {
         request.setAttribute("totalRoutes", totalRoutes);
         request.setAttribute("totalUsers", totalUsers);
 
+        // 3. Kiểm tra xem có đơn xin nghỉ phép nào đang chờ duyệt hay không
         dal.UserDAO userDAO = new dal.UserDAO();
         boolean hasPendingLeaves = !userDAO.getPendingLeaves().isEmpty();
         request.setAttribute("hasPendingLeaves", hasPendingLeaves);
 
+        // 4. Lấy danh sách thông báo cá nhân của Admin
         dal.NotificationDAO notifDAO = new dal.NotificationDAO();
         String username = (String) session.getAttribute("username");
         java.util.List<model.Notification> notifications = notifDAO.getNotificationsByUsername(username);
@@ -55,12 +60,14 @@ public class AdminDashboardServlet extends HttpServlet {
                 .filter(b -> "Sẵn sàng".equals(b.getStatus()) || "Hoạt động".equals(b.getStatus()))
                 .collect(java.util.stream.Collectors.toList());
 
+        // 5. Chuẩn bị dữ liệu xử lý thông báo "đổi xe do quá tải"
         dal.ScheduleDAO sDao = new dal.ScheduleDAO();
         java.util.List<model.Schedule> allSchedules = sDao.getAllSchedules();
         java.util.Map<Integer, java.util.List<Integer>> availableBusesMap = new java.util.HashMap<>();
         java.util.Map<Integer, Integer> studentCountMap = new java.util.HashMap<>();
         dal.HocSinhDAO hsDao = new dal.HocSinhDAO();
 
+        // 6. Duyệt qua các thông báo để lấy số lượng học sinh thực tế và danh sách xe trống
         for (model.Notification n : notifications) {
             String text = n.getMessage();
             if (text.contains("|SCHEDULE_ID:")) {
@@ -110,11 +117,15 @@ public class AdminDashboardServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        
+        // Luồng 1: Xử lý thao tác đánh dấu đã đọc thông báo
         if ("mark_read".equals(action)) {
             int notifID = Integer.parseInt(request.getParameter("notifID"));
             dal.NotificationDAO dao = new dal.NotificationDAO();
             dao.markAsRead(notifID);
-        } else if ("redirect_to_schedule".equals(action)) {
+        } 
+        // Luồng 2: Xử lý thao tác chuyển hướng thẳng đến lịch trình liên quan đến thông báo
+        else if ("redirect_to_schedule".equals(action)) {
             String scheduleIdStr = request.getParameter("scheduleID");
             String targetDateStr = request.getParameter("targetDate");
             int notifID = Integer.parseInt(request.getParameter("notifID"));
@@ -133,7 +144,9 @@ public class AdminDashboardServlet extends HttpServlet {
                     return;
                 }
             }
-        } else if ("change_bus".equals(action)) {
+        } 
+        // Luồng 3: Xử lý thao tác đổi xe nhanh từ Dashboard
+        else if ("change_bus".equals(action)) {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
             int newBusID = Integer.parseInt(request.getParameter("newBusID"));
             int notifID = Integer.parseInt(request.getParameter("notifID"));

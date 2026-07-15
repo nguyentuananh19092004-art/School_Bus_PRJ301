@@ -6,6 +6,7 @@
     Cung cấp các chức năng để tài xế thao tác trong ca: Bắt đầu chuyến, Báo cáo sự cố (hỏng xe), Đổi xe, Kết thúc chuyến.
 --%>
 <%
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || !"taixe".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -81,7 +82,8 @@
                                 %>
                                     <button type="button" class="btn btn-secondary btn-lg mb-2" disabled title="Đang chờ đổi xe do sự cố"><i class="bi bi-car-front-fill me-2"></i> Hoàn tất kiểm tra xe & Di chuyển (Chờ đổi xe)</button>
                                 <%      } else { %>
-                                <form action="driver-action" method="POST" class="d-inline">
+                                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="driver-action" method="POST" class="d-inline">
                                     <input type="hidden" name="action" value="start_moving">
                                     <input type="hidden" name="scheduleID" value="<%= schedule.getScheduleID() %>">
                                     <input type="hidden" name="busID" value="<%= schedule.getBusID() %>">
@@ -126,7 +128,8 @@
                                     %>
                                         <button type="button" class="btn btn-secondary btn-lg mb-2" disabled title="Đang chờ đổi xe do sự cố"><i class="bi bi-play-circle-fill me-2"></i> Bắt đầu vào lộ trình (Chờ đổi xe)</button>
                                     <%     } else { %>
-                                    <form action="driver-action" method="POST" class="d-inline">
+                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="driver-action" method="POST" class="d-inline">
                                         <input type="hidden" name="action" value="start_trip">
                                         <input type="hidden" name="scheduleID" value="<%= schedule.getScheduleID() %>">
                                         <input type="hidden" name="busID" value="<%= schedule.getBusID() %>">
@@ -159,7 +162,8 @@
                                       <% } %>
                                   <% } %>
                                 <% if ("NORMAL".equals(schedule.getIncidentStatus()) || "DRIVER_SWITCHED".equals(schedule.getIncidentStatus()) || schedule.getIncidentStatus() == null) { %>
-                                <form action="driver-action" method="POST" class="mt-2">
+                                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="driver-action" method="POST" class="mt-2">
                                     <input type="hidden" name="action" value="report_incident">
                                     <input type="hidden" name="scheduleID" value="<%= schedule.getScheduleID() %>">
                                     <input type="hidden" name="busID" value="<%= schedule.getBusID() %>">
@@ -175,7 +179,8 @@
                                 <%  } else if ("ARRIVED".equals(iStatus)) { %>
                                     <div class="mt-2 text-primary fw-bold"><i class="bi bi-geo-alt-fill"></i> Kỹ thuật đã đến nơi, chuẩn bị bàn giao...</div>
                                 <%  } else if ("HANDED_OVER".equals(iStatus) || "TECH_RESOLVED".equals(iStatus)) { %>
-                                    <form action="driver-action" method="POST" class="mt-2">
+                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="driver-action" method="POST" class="mt-2">
                                         <input type="hidden" name="action" value="switch_bus">
                                         <input type="hidden" name="scheduleID" value="<%= schedule.getScheduleID() %>">
                                         <input type="hidden" name="newBusID" value="<%= schedule.getReplacementBusID() %>">
@@ -229,7 +234,8 @@
     <div class="modal fade" id="completeTripModal" tabindex="-1" aria-labelledby="completeTripModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form action="driver-action" method="POST">
+                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="driver-action" method="POST">
                     <div class="modal-header bg-success text-white">
                         <h5 class="modal-title fw-bold" id="completeTripModalLabel"><i class="bi bi-check-circle-fill me-2"></i>Xác nhận kết thúc chuyến</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>

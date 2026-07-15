@@ -7,10 +7,13 @@
     Cho phép phụ huynh thực hiện báo nghỉ, xin nghỉ phép các ngày tới, đổi điểm đón, hoặc hủy dịch vụ.
 --%>
 <%
+    // 1. Kiểm tra xác thực (Authentication): Chỉ Phụ huynh mới được phép truy cập
     if(session.getAttribute("userRole") == null || !"phuhuynh".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
     }
+    
+    // 2. Lấy dữ liệu nghiệp vụ do Servlet truyền xuống (Học sinh, Lịch trình hiện tại, Điểm đón, v.v.)
     HocSinh student = (HocSinh) request.getAttribute("student");
     List<StopRouteOption> stopRouteOptions = (List<StopRouteOption>) request.getAttribute("stopRouteOptions");
     Stop currentStop = (Stop) request.getAttribute("currentStop");

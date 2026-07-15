@@ -189,7 +189,8 @@
                 <% } %>
             </div>
 
-            <form action="VerifyOTPServlet" method="POST">
+            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="VerifyOTPServlet" method="POST">
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control" id="otpCode" name="otpCode" placeholder="Nhập OTP" required maxlength="6" pattern="\d{6}">
                     <label for="otpCode">Mã OTP (6 chữ số)</label>

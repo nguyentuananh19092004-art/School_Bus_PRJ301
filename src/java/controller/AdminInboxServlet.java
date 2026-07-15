@@ -27,9 +27,12 @@ public class AdminInboxServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -70,6 +73,7 @@ public class AdminInboxServlet extends HttpServlet {
         request.setAttribute("pendingLeaves", pendingLeaves);
         request.setAttribute("replacementsMap", replacementsMap);
         request.setAttribute("hasSchedulesMap", hasSchedulesMap);
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("admin_inbox.jsp").forward(request, response);
     }
 
@@ -80,9 +84,12 @@ public class AdminInboxServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -94,7 +101,8 @@ public class AdminInboxServlet extends HttpServlet {
         
         UserLeave leave = userDAO.getLeaveById(leaveID);
         if (leave == null) {
-            response.sendRedirect("admin-inbox?msg=error");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("admin-inbox?msg=error");
             return;
         }
 
@@ -129,15 +137,18 @@ public class AdminInboxServlet extends HttpServlet {
                 }
             }
             
-            response.sendRedirect("admin-inbox?msg=approved");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("admin-inbox?msg=approved");
         } else if ("reject".equals(action)) {
             userDAO.updateLeaveStatus(leaveID, "REJECTED");
             if (username != null) {
                 notifDAO.insertNotification(username, "Đơn xin nghỉ phép của bạn vào ngày " + leave.getLeaveDate() + " đã BỊ TỪ CHỐI. Vui lòng liên hệ Admin.");
             }
-            response.sendRedirect("admin-inbox?msg=rejected");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("admin-inbox?msg=rejected");
         } else {
-            response.sendRedirect("admin-inbox");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("admin-inbox");
         }
     }
 }

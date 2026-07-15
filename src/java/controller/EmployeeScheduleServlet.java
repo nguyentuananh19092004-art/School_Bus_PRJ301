@@ -33,10 +33,12 @@ public class EmployeeScheduleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         HttpSession session = request.getSession();
         String role = (String) session.getAttribute("userRole");
         if (role == null || (!"taixe".equals(role) && !"giamthi".equals(role) && !"kythuat".equals(role))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -69,6 +71,7 @@ public class EmployeeScheduleServlet extends HttpServlet {
         request.setAttribute("busDAO", busDAO);
         request.setAttribute("userDAO", userDAO);
 
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("employee_schedule.jsp").forward(request, response);
     }
 }

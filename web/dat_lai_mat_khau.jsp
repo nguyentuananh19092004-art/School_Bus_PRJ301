@@ -172,7 +172,8 @@
                 <% } %>
             </div>
 
-            <form action="ResetPasswordServlet" method="POST">
+            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="ResetPasswordServlet" method="POST">
                 <div class="form-floating mb-1 position-relative">
                     <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Mật khẩu mới" required pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}" title="Mật khẩu phải từ 8 kí tự trở lên, bao gồm chữ in thường, in hoa, số và kí tự đặc biệt." style="padding-right: 40px;">
                     <label for="newPassword">Mật khẩu mới</label>

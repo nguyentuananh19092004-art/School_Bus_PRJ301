@@ -24,6 +24,7 @@ public class DailyStatusServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         String action = request.getParameter("action");
         String type = request.getParameter("type"); // "user" or "bus"
         String dateStr = request.getParameter("date");
@@ -32,21 +33,25 @@ public class DailyStatusServlet extends HttpServlet {
         if ("user".equals(type)) {
             int id = Integer.parseInt(request.getParameter("id"));
             String role = request.getParameter("role");
-            UserDAO dao = new UserDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        UserDAO dao = new UserDAO();
             if ("cancel_leave".equals(action)) {
                 dao.deleteUserLeave(id, date);
             } else if ("report_leave".equals(action)) {
                 dao.insertUserLeave(id, date, "Nghỉ phép", "APPROVED");
             }
-            response.sendRedirect("user-list?role=" + role + "&date=" + dateStr);
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("user-list?role=" + role + "&date=" + dateStr);
         } else if ("bus".equals(type)) {
             int id = Integer.parseInt(request.getParameter("id"));
-            BusDAO dao = new BusDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        BusDAO dao = new BusDAO();
             if ("cancel_maint".equals(action)) {
                 model.User user = (model.User) request.getSession().getAttribute("user");
                 if (user == null || !"TECHNICIAN".equalsIgnoreCase(user.getRole())) {
                     request.getSession().setAttribute("error", "Chỉ Kỹ thuật viên mới có quyền hủy bảo dưỡng!");
-                    response.sendRedirect("bus-list?date=" + dateStr);
+                    // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("bus-list?date=" + dateStr);
                     return;
                 }
                 dao.deleteBusMaintenance(id, date);
@@ -64,7 +69,8 @@ public class DailyStatusServlet extends HttpServlet {
                 }
                 notifyAdminForMaintenance(id, date);
             }
-            response.sendRedirect("bus-list?date=" + dateStr);
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("bus-list?date=" + dateStr);
         }
     }
     

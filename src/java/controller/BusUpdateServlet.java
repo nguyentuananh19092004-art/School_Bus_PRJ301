@@ -60,6 +60,8 @@ public class BusUpdateServlet extends HttpServlet {
             String status = request.getParameter("status");
 
             BusDAO dao = new BusDAO();
+            
+            // 1. Kiểm tra xem Biển số xe đã được sử dụng bởi xe khác chưa
             if (dao.checkLicensePlateExist(licensePlate, busID)) {
                 request.setAttribute("error", "Biển số xe '" + licensePlate + "' đã được sử dụng bởi xe khác!");
                 request.setAttribute("bus", new Bus(busID, licensePlate, capacity, status));
@@ -67,9 +69,11 @@ public class BusUpdateServlet extends HttpServlet {
                 return;
             }
 
+            // 2. Nếu dữ liệu hợp lệ, cập nhật thông tin Xe bus
             Bus b = new Bus(busID, licensePlate, capacity, status);
             dao.updateBus(b);
             
+            // 3. Xử lý đặc biệt: Nếu xe chuyển sang trạng thái Bảo dưỡng, cần hủy các lịch trình tương lai gần
             if ("Bảo dưỡng/Sửa chữa".equals(status)) {
                 notifyAdminForFutureSchedules(busID);
             }

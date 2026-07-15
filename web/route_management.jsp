@@ -8,6 +8,7 @@
 --%>
 <%
     // Kiểm tra đăng nhập
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -192,7 +193,8 @@
                 <!-- Modal Thêm Trạm Mới -->
                 <div class="modal fade" id="addStopModal" tabindex="-1" aria-labelledby="addStopModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                    <form action="add-stop" method="POST" class="modal-content">
+                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="add-stop" method="POST" class="modal-content">
                       <div class="modal-header bg-primary text-white">
                         <h5 class="modal-title fw-bold" id="addStopModalLabel"><i class="bi bi-pin-map-fill me-2"></i>Thêm Điểm Dừng Mới</h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -238,7 +240,8 @@
                 <!-- Modal Sửa Thời Gian Trạm -->
                 <div class="modal fade" id="editStopModal" tabindex="-1" aria-labelledby="editStopModalLabel" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered">
-                    <form action="update-route-stop" method="POST" class="modal-content">
+                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="update-route-stop" method="POST" class="modal-content">
                       <div class="modal-header bg-warning text-dark">
                         <h5 class="modal-title fw-bold" id="editStopModalLabel"><i class="bi bi-pencil-square me-2"></i>Sửa Thời Gian Trạm</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

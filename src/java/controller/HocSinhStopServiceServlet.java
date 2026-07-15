@@ -27,19 +27,25 @@ public class HocSinhStopServiceServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
         String maHocSinh = request.getParameter("id");
         if (maHocSinh != null && !maHocSinh.isEmpty()) {
-            HocSinhDAO dao = new HocSinhDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        HocSinhDAO dao = new HocSinhDAO();
             dao.stopService(maHocSinh);
-            response.sendRedirect("hocsinh-list?msg=stopped");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("hocsinh-list?msg=stopped");
         } else {
-            response.sendRedirect("hocsinh-list?msg=error");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("hocsinh-list?msg=error");
         }
     }
 }

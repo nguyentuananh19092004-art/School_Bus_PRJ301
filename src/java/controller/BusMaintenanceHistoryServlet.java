@@ -29,9 +29,12 @@ public class BusMaintenanceHistoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -44,12 +47,15 @@ public class BusMaintenanceHistoryServlet extends HttpServlet {
                 List<BusMaintenance> history = busDAO.getBusMaintenances(busID);
                 request.setAttribute("bus", bus);
                 request.setAttribute("history", history);
-                request.getRequestDispatcher("bus_maintenance_history.jsp").forward(request, response);
+                // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("bus_maintenance_history.jsp").forward(request, response);
             } else {
-                response.sendRedirect("bus-list");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("bus-list");
             }
         } catch (Exception e) {
-            response.sendRedirect("bus-list");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("bus-list");
         }
     }
 }

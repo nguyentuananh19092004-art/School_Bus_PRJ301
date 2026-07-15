@@ -50,6 +50,8 @@ public class BusCreateServlet extends HttpServlet {
         String status = request.getParameter("status");
 
         BusDAO dao = new BusDAO();
+        
+        // 1. Kiểm tra xem Biển số xe đã tồn tại trong hệ thống chưa
         if (dao.checkLicensePlateExist(licensePlate, 0)) {
             request.setAttribute("error", "Biển số xe '" + licensePlate + "' đã tồn tại trong hệ thống!");
             request.setAttribute("bus", new Bus(0, licensePlate, capacity, status));
@@ -57,6 +59,7 @@ public class BusCreateServlet extends HttpServlet {
             return;
         }
 
+        // 2. Nếu dữ liệu hợp lệ, tạo mới Xe bus
         Bus b = new Bus(0, licensePlate, capacity, status);
         dao.insertBus(b);
 

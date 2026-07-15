@@ -60,6 +60,7 @@ public class UserUpdateServlet extends HttpServlet {
         UserDAO dao = new UserDAO();
         String password = request.getParameter("password"); // get password from form
 
+        // 1. Kiểm tra xem Tên tài khoản đã tồn tại chưa (ngoại trừ tài khoản hiện tại)
         if (dao.checkUsernameExist(username, userID)) {
             request.setAttribute("error", "Tên tài khoản '" + username + "' đã được sử dụng!");
             request.setAttribute("userObj", new User(userID, username, password, role, fullName, phone, email, status));
@@ -68,6 +69,7 @@ public class UserUpdateServlet extends HttpServlet {
             return;
         }
 
+        // 2. Kiểm tra xem Số điện thoại đã được người khác sử dụng chưa
         if (dao.checkPhoneExist(phone, userID)) {
             request.setAttribute("error", "Số điện thoại '" + phone + "' đã được người khác sử dụng!");
             request.setAttribute("userObj", new User(userID, username, password, role, fullName, phone, email, status));
@@ -76,6 +78,7 @@ public class UserUpdateServlet extends HttpServlet {
             return;
         }
 
+        // 3. Kiểm tra xem Email đã được sử dụng chưa (ngoại trừ tài khoản hiện tại)
         if (dao.checkEmailExist(email, userID)) {
             request.setAttribute("error", "Email '" + email + "' đã được sử dụng bởi một tài khoản khác!");
             request.setAttribute("userObj", new User(userID, username, password, role, fullName, phone, email, status));
@@ -84,6 +87,7 @@ public class UserUpdateServlet extends HttpServlet {
             return;
         }
 
+        // 4. Kiểm tra xem Email có thuộc tên miền (domain) cho phép hay không
         String allowedDomain = getServletContext().getInitParameter("ALLOWED_EMAIL_DOMAIN");
         if (!util.EmailUtil.isValidDomain(email, allowedDomain)) {
             request.setAttribute("error", "Email bắt buộc phải có tên miền thuộc danh sách: " + allowedDomain);
@@ -93,6 +97,7 @@ public class UserUpdateServlet extends HttpServlet {
             return;
         }
 
+        // 5. Nếu mọi dữ liệu hợp lệ, cập nhật thông tin người dùng
         User u = new User(userID, username, password, role, fullName, phone, email, status);
         dao.updateUser(u);
 

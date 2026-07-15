@@ -34,6 +34,8 @@ public class RouteManagementServlet extends HttpServlet {
             throws ServletException, IOException {
         
         HttpSession session = request.getSession();
+        
+        // 1. Kiểm tra phân quyền: Yêu cầu tài khoản Admin
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
             response.sendRedirect("dang_nhap.jsp");
             return;

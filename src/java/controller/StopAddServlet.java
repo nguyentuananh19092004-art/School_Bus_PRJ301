@@ -29,11 +29,14 @@ public class StopAddServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         request.setCharacterEncoding("UTF-8");
         
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -59,11 +62,13 @@ public class StopAddServlet extends HttpServlet {
                 stopDAO.addStopToRoute(routeID, stopID, maxOrder + 1, estimatedTime, returnTime);
             }
 
-            response.sendRedirect("route-management?routeID=" + routeID);
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("route-management?routeID=" + routeID);
             
         } catch (Exception e) {
             System.out.println("Error adding stop: " + e.getMessage());
-            response.sendRedirect("route-management?error=1");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("route-management?error=1");
         }
     }
 }

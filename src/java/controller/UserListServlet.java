@@ -31,11 +31,13 @@ public class UserListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // 1. Kiểm tra tham số vai trò, nếu không có mặc định lấy DRIVER (Tài xế)
         String role = request.getParameter("role"); // DRIVER or MONITOR
         if (role == null || role.isEmpty()) {
             role = "DRIVER"; // default
         }
         
+        // 2. Lấy tham số ngày lọc, nếu không có mặc định lấy ngày hôm nay
         String dateParam = request.getParameter("date");
         Date selectedDate;
         if (dateParam != null && !dateParam.isEmpty()) {
@@ -44,9 +46,11 @@ public class UserListServlet extends HttpServlet {
             selectedDate = Date.valueOf(LocalDate.now());
         }
         
+        // 3. Lấy danh sách user theo vai trò và ngày (có xét logic nghỉ phép)
         UserDAO dao = new UserDAO();
         List<User> userList = dao.getUsersByRoleAndDate(role, selectedDate);
         
+        // 4. Trả kết quả về View
         request.setAttribute("userList", userList);
         request.setAttribute("role", role);
         request.setAttribute("selectedDate", selectedDate.toString());

@@ -7,6 +7,7 @@
 <%@page import="model.UserLeave"%>
 <%@page import="model.User"%>
 <%
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -57,7 +58,7 @@
         <% } %>
 
         <div class="table-custom">
-            <table class="table table-hover mb-0 align-middle">
+            <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-hover mb-0 align-middle">
                 <thead>
                     <tr>
                         <th class="py-3 px-4">Ngày xin nghỉ</th>
@@ -104,7 +105,8 @@
                                 List<User> avail = (replacementsMap != null) ? replacementsMap.get(ul.getLeaveID()) : null;
                                 if (hasSch != null && hasSch) {
                             %>
-                            <form action="admin-inbox" method="POST" class="d-inline-flex align-items-center gap-1">
+                            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="admin-inbox" method="POST" class="d-inline-flex align-items-center gap-1">
                                 <input type="hidden" name="leaveID" value="<%= ul.getLeaveID() %>">
                                 <input type="hidden" name="action" value="approve">
                                 <select name="replacementUserID" class="form-select form-select-sm w-auto" required>
@@ -118,13 +120,15 @@
                                 <button type="submit" class="btn btn-sm btn-success text-nowrap" onclick="return confirm('Duyệt nghỉ phép và bàn giao lịch làm việc cho nhân sự thay thế?');"><i class="bi bi-check2"></i> Duyệt & Thay</button>
                             </form>
                             <% } else { %>
-                            <form action="admin-inbox" method="POST" class="d-inline">
+                            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="admin-inbox" method="POST" class="d-inline">
                                 <input type="hidden" name="leaveID" value="<%= ul.getLeaveID() %>">
                                 <input type="hidden" name="action" value="approve">
                                 <button type="submit" class="btn btn-sm btn-success me-1" onclick="return confirm('Duyệt cho nhân sự này nghỉ? (Không có lịch làm việc ngày này)');"><i class="bi bi-check2"></i> Duyệt</button>
                             </form>
                             <% } %>
-                            <form action="admin-inbox" method="POST" class="d-inline">
+                            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="admin-inbox" method="POST" class="d-inline">
                                 <input type="hidden" name="leaveID" value="<%= ul.getLeaveID() %>">
                                 <input type="hidden" name="action" value="reject">
                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Từ chối đơn xin nghỉ này?');"><i class="bi bi-x-lg"></i> Từ chối</button>

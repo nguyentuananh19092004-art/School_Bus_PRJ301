@@ -22,7 +22,7 @@
                 <strong>Thông báo:</strong> Dịch vụ ngưng hoạt động từ ngày mai. Trạng thái học sinh đã chuyển về "Ngưng hoạt động".
             </div>
         </c:if>
-        <table class="table table-bordered table-striped">
+        <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
                     <th>Mã HS</th>

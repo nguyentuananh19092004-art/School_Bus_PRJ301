@@ -27,7 +27,11 @@ public class HocSinhDeleteServlet extends HttpServlet {
             throws ServletException, IOException {
         String maHocSinh = request.getParameter("id");
         HocSinhDAO dao = new HocSinhDAO();
+        
+        // 1. Thực hiện xóa mềm học sinh theo mã
         dao.deleteHocSinh(maHocSinh);
+        
+        // 2. Quay lại danh sách học sinh
         response.sendRedirect("hocsinh-list");
     }
 }

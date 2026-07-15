@@ -22,7 +22,8 @@
                if (error != null) { %>
                 <div class="alert alert-danger fw-bold"><%= error %></div>
             <% } %>
-            <form action="<%= isUpdate ? "hocsinh-edit" : "hocsinh-add" %>" method="POST">
+            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="<%= isUpdate ? "hocsinh-edit" : "hocsinh-add" %>" method="POST">
                 <div class="mb-3">
                     <label>Mã Học Sinh</label>
                     <input type="text" name="maHocSinh" value="<%= isUpdate ? hs.getMaHocSinh() : "" %>" class="form-control" <%= isUpdate ? "readonly" : "required" %>/>

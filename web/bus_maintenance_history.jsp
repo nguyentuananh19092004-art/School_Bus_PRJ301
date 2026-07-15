@@ -31,7 +31,7 @@
         
         <div class="card shadow-sm">
             <div class="card-body p-0">
-                <table class="table table-hover table-striped mb-0 text-center align-middle">
+                <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-hover table-striped mb-0 text-center align-middle">
                     <thead class="table-info">
                         <tr>
                             <th>STT</th>

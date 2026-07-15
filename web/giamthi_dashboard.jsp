@@ -8,6 +8,7 @@
     Cho phép Giám thị điểm danh học sinh, xác nhận đã đến điểm dừng, và gọi phụ huynh.
 --%>
 <%
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || !"giamthi".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -117,7 +118,8 @@
                                 %>
                                     <span class="badge bg-danger"><i class="bi bi-tools"></i> Xe hỏng, chờ đổi xe...</span>
                                 <%     } else { %>
-                                <form action="monitor-action" method="POST" class="m-0">
+                                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="monitor-action" method="POST" class="m-0">
                                     <input type="hidden" name="action" value="reach_stop">
                                     <input type="hidden" name="scheduleID" value="<%= schedule.getScheduleID() %>">
                                     <input type="hidden" name="stopID" value="<%= s.getStopID() %>">
@@ -177,7 +179,8 @@
                                                     %>
                                                         <span class="badge bg-danger"><i class="bi bi-tools"></i> Chờ đổi xe</span>
                                                     <%     } else { %>
-                                                    <form action="monitor-action" method="POST" class="d-inline">
+                                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="monitor-action" method="POST" class="d-inline">
                                                         <input type="hidden" name="action" value="notify_parent">
                                                         <input type="hidden" name="hocSinhTK" value="<%= hs.getTenTK() %>">
                                                         <input type="hidden" name="stopName" value="<%= s.getStopName() %>">
@@ -185,7 +188,8 @@
                                                         <input type="hidden" name="stopID" value="<%= s.getStopID() %>">
                                                         <button type="submit" class="btn btn-sm btn-outline-primary"><i class="bi bi-bell"></i> Gọi Phụ Huynh</button>
                                                     </form>
-                                                    <form action="monitor-action" method="POST" class="d-inline ms-1">
+                                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="monitor-action" method="POST" class="d-inline ms-1">
                                                         <input type="hidden" name="action" value="mark_attendance">
                                                         <input type="hidden" name="scheduleID" value="<%= schedule.getScheduleID() %>">
                                                         <input type="hidden" name="stopID" value="<%= s.getStopID() %>">
@@ -235,7 +239,8 @@
                                 %>
                                     <button type="button" class="btn btn-secondary btn-lg px-5 fw-bold" disabled title="Xe đang báo hỏng, không thể hoàn tất"><i class="bi bi-tools me-2"></i> Chờ đổi xe</button>
                                 <%  } else { %>
-                                <form action="monitor-action" method="POST">
+                                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="monitor-action" method="POST">
                                     <input type="hidden" name="action" value="complete_trip">
                                     <input type="hidden" name="scheduleID" value="<%= schedule.getScheduleID() %>">
                                     <input type="hidden" name="direction" value="<%= schedule.getDirection() %>">

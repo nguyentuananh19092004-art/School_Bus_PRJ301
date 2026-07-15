@@ -28,7 +28,9 @@ public class TechnicianScheduleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         String action = request.getParameter("action");
+        // Khởi tạo đối tượng DAO để tương tác CSDL
         ScheduleDAO dao = new ScheduleDAO();
 
         if ("delete".equals(action)) {
@@ -38,12 +40,15 @@ public class TechnicianScheduleServlet extends HttpServlet {
                 int id = Integer.parseInt(idRaw);
                 boolean success = dao.deleteTechnicianSchedule(id);
                 if (success) {
-                    response.sendRedirect("ScheduleServlet?selectedDate=" + selectedDate + "&msg=tech_deleted");
+                    // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?selectedDate=" + selectedDate + "&msg=tech_deleted");
                 } else {
-                    response.sendRedirect("ScheduleServlet?selectedDate=" + selectedDate + "&msg=tech_error");
+                    // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?selectedDate=" + selectedDate + "&msg=tech_error");
                 }
             } catch (Exception e) {
-                response.sendRedirect("ScheduleServlet?selectedDate=" + selectedDate + "&msg=tech_error");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?selectedDate=" + selectedDate + "&msg=tech_error");
             }
             return;
         }
@@ -57,24 +62,29 @@ public class TechnicianScheduleServlet extends HttpServlet {
             java.time.LocalDate today = java.time.LocalDate.now();
             
             if (scheduleDate.isBefore(today)) {
-                response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_past_date");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_past_date");
                 return;
             }
 
             dal.UserDAO userDAO = new dal.UserDAO();
             if (userDAO.isLeaveApproved(technicianID, date)) {
-                response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_on_leave");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_on_leave");
                 return;
             }
 
             boolean success = dao.insertTechnicianSchedule(technicianID, date);
             if (success) {
-                response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_success");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_success");
             } else {
-                response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_conflict");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?selectedDate=" + date + "&msg=tech_conflict");
             }
         } catch (Exception e) {
-            response.sendRedirect("ScheduleServlet?msg=tech_error");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("ScheduleServlet?msg=tech_error");
         }
     }
 
@@ -89,6 +99,7 @@ public class TechnicianScheduleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         doPost(request, response);
     }
 }

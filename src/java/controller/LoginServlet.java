@@ -34,17 +34,17 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        dal.UserDAO userDAO = new dal.UserDAO();
+        // 1. Kiểm tra đăng nhập với các vai trò của Nhân viên (Admin, Kỹ thuật, Tài xế, Giám thị)
+        UserDAO userDAO = new UserDAO();
         String role = null;
-        
         if (userDAO.checkLogin(username, password, "ADMIN")) role = "admin";
-        else if (userDAO.checkLogin(username, password, "MONITOR")) role = "giamthi";
-        else if (userDAO.checkLogin(username, password, "PARENT")) role = "phuhuynh";
-        else if (userDAO.checkLogin(username, password, "DRIVER")) role = "taixe";
         else if (userDAO.checkLogin(username, password, "TECHNICIAN")) role = "kythuat";
-        
+        else if (userDAO.checkLogin(username, password, "DRIVER")) role = "taixe";
+        else if (userDAO.checkLogin(username, password, "MONITOR")) role = "giamthi";
+
         boolean isValid = (role != null);
         
+        // 2. Nếu không phải Nhân viên, kiểm tra xem có phải là Phụ huynh (dựa trên bảng HocSinh) không
         if (!isValid) {
             dal.HocSinhDAO hocSinhDAO = new dal.HocSinhDAO();
             if (hocSinhDAO.checkLogin(username, password)) {
@@ -53,11 +53,13 @@ public class LoginServlet extends HttpServlet {
             }
         }
         
+        // 3. Nếu đăng nhập thành công (tài khoản hợp lệ), khởi tạo Session
         if (isValid) {
             HttpSession session = request.getSession();
             session.setAttribute("userRole", role);
             session.setAttribute("username", username);
             
+            // 4. Lấy và lưu UserID hoặc MaHocSinh vào Session để sử dụng cho các chức năng khác
             model.User user = userDAO.getUserByUsername(username);
             if (user != null) {
                 session.setAttribute("userID", user.getUserID());

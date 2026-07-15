@@ -30,10 +30,13 @@ public class MonitorActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         request.setCharacterEncoding("UTF-8");
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"giamthi".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -44,7 +47,8 @@ public class MonitorActionServlet extends HttpServlet {
             int stopID = Integer.parseInt(request.getParameter("stopID"));
             String stopName = request.getParameter("stopName");
             String direction = request.getParameter("direction");
-            ScheduleProgressDAO dao = new ScheduleProgressDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleProgressDAO dao = new ScheduleProgressDAO();
             dao.insertProgress(scheduleID, stopID);
             
             boolean isSchoolStop = Boolean.parseBoolean(request.getParameter("isSchoolStop"));
@@ -56,7 +60,8 @@ public class MonitorActionServlet extends HttpServlet {
                     String[] maHocSinhArray = assignedStudents.split(",");
                     dal.AttendanceDAO attDAO = new dal.AttendanceDAO();
                     dal.HocSinhDAO hsDAO = new dal.HocSinhDAO();
-                    NotificationDAO notifDAO = new NotificationDAO();
+                    // Khởi tạo đối tượng DAO để tương tác CSDL
+        NotificationDAO notifDAO = new NotificationDAO();
                     for (String ma : maHocSinhArray) {
                         if (!ma.trim().isEmpty()) {
                             attDAO.insertAttendance(scheduleID, ma.trim(), stopID, false, direction);
@@ -71,7 +76,8 @@ public class MonitorActionServlet extends HttpServlet {
                     dal.AttendanceDAO attDAO = new dal.AttendanceDAO();
                     java.util.List<String> attendedList = attDAO.getAttendedStudents(scheduleID);
                     dal.HocSinhDAO hsDAO = new dal.HocSinhDAO();
-                    NotificationDAO notifDAO = new NotificationDAO();
+                    // Khởi tạo đối tượng DAO để tương tác CSDL
+        NotificationDAO notifDAO = new NotificationDAO();
                     for (String ma : attendedList) {
                         model.HocSinh hs = hsDAO.getHocSinhByMa(ma);
                         if (hs != null) {
@@ -82,7 +88,8 @@ public class MonitorActionServlet extends HttpServlet {
             } else if (stopName != null) {
                 dal.HocSinhDAO hsDAO = new dal.HocSinhDAO();
                 java.util.List<model.HocSinh> hsList = hsDAO.getHocSinhByStopID(stopID);
-                NotificationDAO notifDAO = new NotificationDAO();
+                // Khởi tạo đối tượng DAO để tương tác CSDL
+        NotificationDAO notifDAO = new NotificationDAO();
                 String type = "TO_HOME".equals(direction) ? "điểm trả" : "điểm đón";
                 for (model.HocSinh hs : hsList) {
                     notifDAO.insertNotification(hs.getTenTK(), "Xe đã đi qua " + type + " " + stopName + ".");
@@ -110,7 +117,8 @@ public class MonitorActionServlet extends HttpServlet {
                     message = "Xe buýt đã gần đến điểm đón: " + stopName + ". Phụ huynh vui lòng chuẩn bị cho học sinh ra điểm đón!";
                 }
             }
-            NotificationDAO dao = new NotificationDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        NotificationDAO dao = new NotificationDAO();
             dao.insertNotification(hocSinhTK, message); // The Username in Notification table matches the HocSinh.TenTK which is the Parent's account.
         } else if ("mark_attendance".equals(action)) {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
@@ -130,14 +138,16 @@ public class MonitorActionServlet extends HttpServlet {
                     String message = isBoarding ? 
                         "Học sinh " + hs.getTenHocSinh() + " đã lên xe." : 
                         "Học sinh " + hs.getTenHocSinh() + " đã xuống xe an toàn.";
-                    NotificationDAO notifDAO = new NotificationDAO();
+                    // Khởi tạo đối tượng DAO để tương tác CSDL
+        NotificationDAO notifDAO = new NotificationDAO();
                     notifDAO.insertNotification(hs.getTenTK(), message);
                 }
             }
         } else if ("complete_trip".equals(action)) {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
             String direction = request.getParameter("direction");
-            ScheduleProgressDAO dao = new ScheduleProgressDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleProgressDAO dao = new ScheduleProgressDAO();
             dao.insertProgress(scheduleID, -1); // -1 marks that the monitor has completed the trip
             
             if ("TO_SCHOOL".equals(direction)) {
@@ -145,6 +155,7 @@ public class MonitorActionServlet extends HttpServlet {
             }
         }
 
+        // Chuyển hướng (Redirect) người dùng đến trang khác
         response.sendRedirect("monitor-dashboard");
     }
 }

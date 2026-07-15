@@ -8,6 +8,7 @@
     Dành cho Tài xế, Giám thị hoặc Kỹ thuật viên để xem lịch phân công nhiệm vụ của cá nhân trong một tuần.
 --%>
 <%
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || (!"taixe".equals(session.getAttribute("userRole")) && !"giamthi".equals(session.getAttribute("userRole")) && !"kythuat".equals(session.getAttribute("userRole")))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -58,7 +59,8 @@
 
         <div class="card dashboard-card mb-4">
             <div class="card-body bg-light rounded">
-                <form action="employee-schedule" method="GET" class="d-flex align-items-end">
+                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="employee-schedule" method="GET" class="d-flex align-items-end">
                     <div class="me-3">
                         <label class="form-label fw-bold">Chọn ngày muốn xem:</label>
                         <input type="date" name="date" class="form-control" value="<%= request.getAttribute("selectedDate") %>" required style="cursor: pointer;" onclick="this.showPicker()">

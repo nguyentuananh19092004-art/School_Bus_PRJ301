@@ -24,6 +24,7 @@ public class LeaveRequestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         
@@ -32,7 +33,8 @@ public class LeaveRequestServlet extends HttpServlet {
         String role = (String) session.getAttribute("userRole");
         
         if (userID == null) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -48,7 +50,8 @@ public class LeaveRequestServlet extends HttpServlet {
             java.time.LocalDateTime deadline = requestDate.minusDays(1).atTime(21, 0);
 
             if (now.isAfter(deadline)) {
-                response.sendRedirect("employee-inbox?msg=leave_timeout");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("employee-inbox?msg=leave_timeout");
                 return;
             }
 
@@ -63,13 +66,16 @@ public class LeaveRequestServlet extends HttpServlet {
                 // Optional: Send notification to Admin that there is a new request
                 // NotificationDAO nDao = new NotificationDAO();
                 // nDao.insertNotification("admin", "Có đơn xin nghỉ phép mới từ " + username + " cho ngày " + dateStr);
-                response.sendRedirect(redirectUrl + "?msg=leave_success");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect(redirectUrl + "?msg=leave_success");
             } else {
-                response.sendRedirect(redirectUrl + "?msg=leave_error");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect(redirectUrl + "?msg=leave_error");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("employee-inbox?msg=leave_error");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("employee-inbox?msg=leave_error");
         }
     }
 }

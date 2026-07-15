@@ -23,6 +23,8 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
     }
 
@@ -33,10 +35,12 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         HttpSession session = request.getSession();
         
         if (session.getAttribute("verifiedUser") == null) {
-            response.sendRedirect("quen_mat_khau.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("quen_mat_khau.jsp");
             return;
         }
 
@@ -45,14 +49,16 @@ public class ResetPasswordServlet extends HttpServlet {
 
         if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
             request.setAttribute("errorMessage", "Mật khẩu xác nhận không khớp.");
-            request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
             return;
         }
 
         String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$";
         if (!newPassword.matches(passwordRegex)) {
             request.setAttribute("errorMessage", "Mật khẩu phải từ 8 kí tự trở lên, bao gồm chữ in thường, in hoa, số và kí tự đặc biệt.");
-            request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
             return;
         }
 
@@ -94,10 +100,12 @@ public class ResetPasswordServlet extends HttpServlet {
             session.removeAttribute("verifiedUser");
             
             request.setAttribute("successMessage", "Đổi mật khẩu thành công! Bạn có thể đăng nhập bằng mật khẩu mới.");
-            request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
         } else {
             request.setAttribute("errorMessage", "Đã xảy ra lỗi khi cập nhật mật khẩu. Phiên đổi mật khẩu không hợp lệ.");
-            request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
         }
     }
 }

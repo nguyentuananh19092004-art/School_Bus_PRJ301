@@ -28,11 +28,14 @@ public class RouteStopUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         request.setCharacterEncoding("UTF-8");
         
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -45,11 +48,13 @@ public class RouteStopUpdateServlet extends HttpServlet {
             StopDAO stopDAO = new StopDAO();
             stopDAO.updateRouteStopTime(routeID, stopID, estimatedTime, returnTime);
 
-            response.sendRedirect("route-management?routeID=" + routeID);
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("route-management?routeID=" + routeID);
             
         } catch (Exception e) {
             System.out.println("Error updating stop: " + e.getMessage());
-            response.sendRedirect("route-management?error=1");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("route-management?error=1");
         }
     }
 }

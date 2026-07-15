@@ -26,10 +26,13 @@ public class HocSinhUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         String maHocSinh = request.getParameter("id");
+        // Khởi tạo đối tượng DAO để tương tác CSDL
         HocSinhDAO dao = new HocSinhDAO();
         HocSinh hs = dao.getHocSinhByMa(maHocSinh);
         request.setAttribute("hs", hs);
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
     }
 
@@ -45,6 +48,7 @@ public class HocSinhUpdateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         request.setCharacterEncoding("UTF-8");
         String maHocSinh = request.getParameter("maHocSinh");
         String tenHocSinh = request.getParameter("tenHocSinh");
@@ -60,13 +64,15 @@ public class HocSinhUpdateServlet extends HttpServlet {
         } catch (NumberFormatException e) {
         }
 
+        // Khởi tạo đối tượng DAO để tương tác CSDL
         HocSinhDAO dao = new HocSinhDAO();
         HocSinh existingByTk = dao.getHocSinhByTenTK(tenTK);
         if (existingByTk != null && !existingByTk.getMaHocSinh().equals(maHocSinh)) {
             request.setAttribute("error", "Tên tài khoản đã tồn tại ở học sinh khác!");
             HocSinh hsError = dao.getHocSinhByMa(maHocSinh);
             request.setAttribute("hs", hsError);
-            request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
             return;
         }
 
@@ -74,7 +80,8 @@ public class HocSinhUpdateServlet extends HttpServlet {
             request.setAttribute("error", "Email '" + email + "' đã được sử dụng bởi một tài khoản khác!");
             HocSinh hsError = dao.getHocSinhByMa(maHocSinh);
             request.setAttribute("hs", hsError);
-            request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
             return;
         }
 
@@ -83,7 +90,8 @@ public class HocSinhUpdateServlet extends HttpServlet {
             request.setAttribute("error", "Email bắt buộc phải có tên miền thuộc danh sách: " + allowedDomain);
             HocSinh hsError = dao.getHocSinhByMa(maHocSinh);
             request.setAttribute("hs", hsError);
-            request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
             return;
         }
 
@@ -94,6 +102,7 @@ public class HocSinhUpdateServlet extends HttpServlet {
         HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, defaultStopID, defaultRouteID, trangThai, email);
         dao.updateHocSinh(hs);
 
+        // Chuyển hướng (Redirect) người dùng đến trang khác
         response.sendRedirect("hocsinh-list");
     }
 }

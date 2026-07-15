@@ -38,7 +38,8 @@
                            if (error != null) { %>
                             <div class="alert alert-danger fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i><%= error %></div>
                         <% } %>
-                        <form action="<%= isEdit ? "user-update" : "user-create" %>" method="POST">
+                        <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="<%= isEdit ? "user-update" : "user-create" %>" method="POST">
                             <% if (isEdit) { %>
                                 <input type="hidden" name="userID" value="<%= u.getUserID() %>">
                             <% } %>

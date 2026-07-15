@@ -30,10 +30,14 @@ public class BusDeleteServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(idRaw);
             BusDAO dao = new BusDAO();
+            
+            // 1. Thực hiện xóa mềm xe bus theo ID
             dao.deleteBus(id);
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
+        
+        // 2. Chuyển hướng người dùng về lại trang danh sách xe bus
         response.sendRedirect("bus-list");
     }
 }

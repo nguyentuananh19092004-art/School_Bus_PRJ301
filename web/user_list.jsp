@@ -29,7 +29,8 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold"><i class="bi <%= icon %> text-primary me-2"></i><%= title %></h2>
             <div class="d-flex align-items-center">
-                <form action="user-list" method="get" class="d-flex me-3 mb-0">
+                <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="user-list" method="get" class="d-flex me-3 mb-0">
                     <input type="hidden" name="role" value="<%= role %>">
                     <label for="dateFilter" class="me-2 fw-bold mb-0">Xem trạng thái ngày:</label>
                     <input type="date" id="dateFilter" name="date" class="form-control form-control-sm me-2" style="cursor: pointer;" 
@@ -46,7 +47,7 @@
         
         <div class="card shadow-sm">
             <div class="card-body p-0">
-                <table class="table table-hover table-striped mb-0 text-center align-middle">
+                <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-hover table-striped mb-0 text-center align-middle">
                     <thead class="table-dark">
                         <tr>
                             <th>ID</th>

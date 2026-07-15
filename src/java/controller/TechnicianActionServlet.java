@@ -36,10 +36,13 @@ public class TechnicianActionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         request.setCharacterEncoding("UTF-8");
+        // Kiểm tra quyền đăng nhập qua Session
         HttpSession session = request.getSession();
         if (session.getAttribute("userRole") == null || !"kythuat".equals(session.getAttribute("userRole"))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -49,12 +52,14 @@ public class TechnicianActionServlet extends HttpServlet {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
             String repBusStr = request.getParameter("replacementBusID");
             if (repBusStr == null || repBusStr.trim().isEmpty()) {
-                response.sendRedirect("technician-dashboard?msg=error_no_bus");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("technician-dashboard?msg=error_no_bus");
                 return;
             }
             int replacementBusID = Integer.parseInt(repBusStr);
             int userID = (int) session.getAttribute("userID");
-            ScheduleDAO dao = new ScheduleDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleDAO dao = new ScheduleDAO();
             
             Schedule currentSch = dao.getScheduleById(scheduleID);
             
@@ -82,17 +87,20 @@ public class TechnicianActionServlet extends HttpServlet {
             }
         } else if ("arrive_incident".equals(action)) {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
-            ScheduleDAO dao = new ScheduleDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleDAO dao = new ScheduleDAO();
             dao.updateIncidentStatus(scheduleID, "ARRIVED", 0);
         } else if ("handover_bus".equals(action)) {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
-            ScheduleDAO dao = new ScheduleDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleDAO dao = new ScheduleDAO();
             dao.updateIncidentStatus(scheduleID, "HANDED_OVER", 0);
         } else if ("mark_maintenance".equals(action)) {
             int busID = Integer.parseInt(request.getParameter("brokenBusID"));
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
             
-            BusDAO busDAO = new BusDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        BusDAO busDAO = new BusDAO();
             String sql = "UPDATE Buses SET Status = N'Bảo dưỡng/Sửa chữa' WHERE BusID = ?";
             try {
                 PreparedStatement st = busDAO.getConnection().prepareStatement(sql);
@@ -123,18 +131,21 @@ public class TechnicianActionServlet extends HttpServlet {
             // Insert into BusMaintenances to display on Bus List dynamic status
             busDAO.insertBusMaintenance(busID, scheduleDate, "Bảo dưỡng do xe hỏng dọc đường");
             
-            ScheduleDAO scheduleDAO = new ScheduleDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleDAO scheduleDAO = new ScheduleDAO();
             scheduleDAO.finishIncident(scheduleID);
             
             notifyAdminForFutureSchedules(busID, scheduleID, scheduleDate, scheduleDAO, busDAO);
             
         } else if ("resolve_incident".equals(action)) {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
-            ScheduleDAO dao = new ScheduleDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleDAO dao = new ScheduleDAO();
             dao.updateIncidentStatus(scheduleID, "NORMAL", 0);
         } else if ("finish_maintenance".equals(action)) {
             int busID = Integer.parseInt(request.getParameter("busID"));
-            BusDAO dao = new BusDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        BusDAO dao = new BusDAO();
             String sql = "UPDATE Buses SET Status = N'Sẵn sàng' WHERE BusID = ?";
             try {
                 PreparedStatement st = dao.getConnection().prepareStatement(sql);
@@ -156,21 +167,25 @@ public class TechnicianActionServlet extends HttpServlet {
         } else if ("start_shift".equals(action)) {
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
             int userID = (int) session.getAttribute("userID");
-            ScheduleDAO dao = new ScheduleDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleDAO dao = new ScheduleDAO();
             dao.updateTechnicianScheduleStatus(scheduleID, "IN_PROGRESS");
             
         } else if ("end_shift".equals(action)) {
             java.time.LocalTime now = java.time.LocalTime.now();
             if (now.isBefore(java.time.LocalTime.of(18, 0))) {
-                response.sendRedirect("technician-dashboard?msg=early_end");
+                // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("technician-dashboard?msg=early_end");
                 return;
             }
             int scheduleID = Integer.parseInt(request.getParameter("scheduleID"));
             int userID = (int) session.getAttribute("userID");
-            ScheduleDAO dao = new ScheduleDAO();
+            // Khởi tạo đối tượng DAO để tương tác CSDL
+        ScheduleDAO dao = new ScheduleDAO();
             dao.updateTechnicianScheduleStatus(scheduleID, "COMPLETED");
         }
 
+        // Chuyển hướng (Redirect) người dùng đến trang khác
         response.sendRedirect("technician-dashboard");
     }
     private void notifyAdminForFutureSchedules(int busID, int currentScheduleID, java.sql.Date scheduleDate, ScheduleDAO scheduleDAO, BusDAO busDAO) {

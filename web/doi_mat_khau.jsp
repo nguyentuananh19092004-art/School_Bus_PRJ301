@@ -186,7 +186,8 @@
                 <% } %>
             </div>
 
-            <form action="change-password" method="POST">
+            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="change-password" method="POST">
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="Mật khẩu cũ" required>
                     <label for="oldPassword">Mật khẩu cũ</label>

@@ -25,6 +25,8 @@ public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
     }
 
@@ -35,11 +37,13 @@ public class ForgotPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         String username = request.getParameter("username");
 
         if (username == null || username.trim().isEmpty()) {
             request.setAttribute("errorMessage", "Vui lòng nhập tên đăng nhập.");
-            request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
             return;
         }
 
@@ -67,7 +71,8 @@ public class ForgotPasswordServlet extends HttpServlet {
             } else {
                 request.setAttribute("errorMessage", "Tài khoản này chưa được liên kết với địa chỉ email nào.");
             }
-            request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
             return;
         }
 
@@ -91,10 +96,12 @@ public class ForgotPasswordServlet extends HttpServlet {
             }
             
             // Chuyển hướng sang trang nhập OTP
-            response.sendRedirect("xac_thuc_otp.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("xac_thuc_otp.jsp");
         } else {
             request.setAttribute("errorMessage", "Lỗi gửi email! Vui lòng kiểm tra lại cấu hình hoặc thử lại sau.");
-            request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
         }
     }
 }

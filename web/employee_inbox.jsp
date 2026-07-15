@@ -6,6 +6,7 @@
 <%@page import="model.Notification"%>
 <%@page import="java.util.List"%>
 <%
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || (!"taixe".equals(session.getAttribute("userRole")) && !"giamthi".equals(session.getAttribute("userRole")) && !"kythuat".equals(session.getAttribute("userRole")))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -76,7 +77,8 @@
                                minDate = minDate.plusDays(1);
                            }
                         %>
-                        <form action="leave-request" method="POST">
+                        <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="leave-request" method="POST">
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Ngày xin nghỉ</label>
                                 <input type="date" name="leaveDate" class="form-control" value="<%= prefillDate %>" min="<%= minDate.toString() %>" required style="cursor: pointer;" onclick="this.showPicker()">

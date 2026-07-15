@@ -22,6 +22,8 @@ public class ChangePasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
+        // Chuyển hướng (Redirect) người dùng đến trang khác
         response.sendRedirect("doi_mat_khau.jsp");
     }
 
@@ -32,9 +34,11 @@ public class ChangePasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("userID") == null) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -48,30 +52,35 @@ public class ChangePasswordServlet extends HttpServlet {
 
         if (user == null || !user.getPassword().equals(oldPassword)) {
             request.setAttribute("errorMessage", "Mật khẩu cũ không chính xác.");
-            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
             return;
         }
 
         if (!newPassword.equals(confirmPassword)) {
             request.setAttribute("errorMessage", "Mật khẩu mới và xác nhận mật khẩu không khớp.");
-            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
             return;
         }
 
         String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$";
         if (!newPassword.matches(passwordRegex)) {
             request.setAttribute("errorMessage", "Mật khẩu phải từ 8 kí tự trở lên, bao gồm chữ in thường, in hoa, số và kí tự đặc biệt.");
-            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
             return;
         }
 
         boolean success = uDao.updatePassword(userID, newPassword);
         if (success) {
             request.setAttribute("successMessage", "Đổi mật khẩu thành công!");
-            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
         } else {
             request.setAttribute("errorMessage", "Đã có lỗi xảy ra. Vui lòng thử lại sau.");
-            request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("doi_mat_khau.jsp").forward(request, response);
         }
     }
 }

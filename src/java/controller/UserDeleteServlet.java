@@ -25,12 +25,15 @@ public class UserDeleteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+                // Xử lý luồng dữ liệu HTTP
         int id = Integer.parseInt(request.getParameter("id"));
         String role = request.getParameter("role");
         
+        // Khởi tạo đối tượng DAO để tương tác CSDL
         UserDAO dao = new UserDAO();
         dao.deleteUser(id);
         
+        // Chuyển hướng (Redirect) người dùng đến trang khác
         response.sendRedirect("user-list?role=" + role);
     }
 }

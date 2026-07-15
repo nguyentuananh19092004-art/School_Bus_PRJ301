@@ -229,7 +229,8 @@
                 <% } %>
             </div>
 
-            <form action="LoginServlet" method="POST">
+            <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="LoginServlet" method="POST">
 
                 <% String usernameVal = (String) request.getAttribute("username"); 
                    String passwordVal = (String) request.getAttribute("password"); %>

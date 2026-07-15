@@ -32,6 +32,7 @@ public class BusListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // 1. Kiểm tra tham số ngày, nếu không có mặc định lấy ngày hôm nay
         String dateParam = request.getParameter("date");
         Date selectedDate;
         if (dateParam != null && !dateParam.isEmpty()) {
@@ -40,9 +41,11 @@ public class BusListServlet extends HttpServlet {
             selectedDate = Date.valueOf(LocalDate.now());
         }
 
+        // 2. Lấy danh sách xe dựa theo ngày (để xem trạng thái xe trong ngày đó)
         BusDAO dao = new BusDAO();
         List<Bus> list = dao.getBusesByDate(selectedDate);
         
+        // 3. Truyền dữ liệu về View
         request.setAttribute("busList", list);
         request.setAttribute("selectedDate", selectedDate.toString());
         request.getRequestDispatcher("bus_list.jsp").forward(request, response);

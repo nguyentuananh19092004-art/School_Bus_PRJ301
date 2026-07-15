@@ -25,7 +25,8 @@ public class EmployeeInboxServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String role = (String) session.getAttribute("userRole");
         if (role == null || (!"taixe".equals(role) && !"giamthi".equals(role) && !"kythuat".equals(role))) {
-            response.sendRedirect("dang_nhap.jsp");
+            // Chuyển hướng (Redirect) người dùng đến trang khác
+        response.sendRedirect("dang_nhap.jsp");
             return;
         }
 
@@ -35,6 +36,7 @@ public class EmployeeInboxServlet extends HttpServlet {
         request.setAttribute("notifications", notifDAO.getNotificationsByUsername(username));
         notifDAO.markAllAsRead(username);
         
+        // Trả kết quả về cho View (JSP) hiển thị
         request.getRequestDispatcher("employee_inbox.jsp").forward(request, response);
     }
 }

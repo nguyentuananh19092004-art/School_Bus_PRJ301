@@ -11,6 +11,7 @@
     - Danh sách các xe đang trong trạng thái bảo dưỡng và nút xác nhận hoàn tất bảo dưỡng.
 --%>
 <%
+    // Kiểm tra session người dùng, chặn truy cập trái phép
     if(session.getAttribute("userRole") == null || !"kythuat".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");
         return;
@@ -119,7 +120,8 @@
                         <div>
                             <% if (todaySchedule != null) { 
                                 if ("PENDING".equals(todaySchedule.getStatus())) { %>
-                                    <form action="technician-action" method="POST" class="m-0">
+                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="technician-action" method="POST" class="m-0">
                                         <input type="hidden" name="action" value="start_shift">
                                         <input type="hidden" name="scheduleID" value="<%= todaySchedule.getTechScheduleID() %>">
                                         <button type="submit" class="btn btn-primary fw-bold px-4 py-2"><i class="bi bi-play-circle-fill me-2"></i> Bắt đầu vào ca</button>
@@ -129,7 +131,8 @@
                                     boolean canEndShift = !currentTime.isBefore(java.time.LocalTime.of(18, 0));
                                     if (canEndShift) {
                             %>
-                                    <form action="technician-action" method="POST" class="m-0">
+                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="technician-action" method="POST" class="m-0">
                                         <input type="hidden" name="action" value="end_shift">
                                         <input type="hidden" name="scheduleID" value="<%= todaySchedule.getTechScheduleID() %>">
                                         <button type="submit" class="btn btn-success fw-bold px-4 py-2"><i class="bi bi-check-circle-fill me-2"></i> Hoàn tất ca làm</button>
@@ -178,7 +181,8 @@
                                         <% } %>
                                     </p>
                                     
-                                    <form action="technician-action" method="POST" class="mt-2 text-end">
+                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="technician-action" method="POST" class="mt-2 text-end">
                                         <input type="hidden" name="scheduleID" value="<%= s.getScheduleID() %>">
                                         <input type="hidden" name="brokenBusID" value="<%= brokenBusID %>">
                                         
@@ -271,7 +275,8 @@
                                              <div class="text-danger small mt-1"><i class="bi bi-exclamation-circle-fill"></i> <%= b.getDescription() %></div>
                                         <% } %>
                                     </div>
-                                    <form action="technician-action" method="POST">
+                                    <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
+<form action="technician-action" method="POST">
                                         <input type="hidden" name="action" value="finish_maintenance">
                                         <input type="hidden" name="busID" value="<%= b.getBusID() %>">
                                         <button type="submit" class="btn btn-sm btn-outline-success"><i class="bi bi-check-lg"></i> Hoàn thành</button>
