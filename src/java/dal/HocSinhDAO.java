@@ -88,6 +88,9 @@ public class HocSinhDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Lấy thông tin học sinh dựa trên Tên tài khoản (TenTK).
+     */
     public HocSinh getHocSinhByTenTK(String tenTK) {
         applyPendingStopChanges();
         String sql = "SELECT * FROM HocSinh WHERE TenTK = ?";
@@ -104,6 +107,9 @@ public class HocSinhDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Lấy danh sách các học sinh đang sử dụng cùng một điểm đón (DefaultStopID) hiện tại.
+     */
     public List<HocSinh> getHocSinhByStopID(int stopID) {
         applyPendingStopChanges();
         List<HocSinh> list = new ArrayList<>();
@@ -121,6 +127,9 @@ public class HocSinhDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Thêm một hồ sơ học sinh mới vào hệ thống.
+     */
     public void insertHocSinh(HocSinh hs) {
         String sql = "INSERT INTO HocSinh (MaHocSinh, TenHocSinh, Lop, TenTK, MatKhau, DefaultStopID, DefaultRouteID, TrangThai, Email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -148,6 +157,9 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Cập nhật thông tin hồ sơ của học sinh (không cập nhật thay đổi tuyến đường tương lai).
+     */
     public void updateHocSinh(HocSinh hs) {
         String sql = "UPDATE HocSinh SET TenHocSinh = ?, Lop = ?, TenTK = ?, MatKhau = ?, DefaultStopID = ?, DefaultRouteID = ?, TrangThai = ?, Email = ? WHERE MaHocSinh = ?";
         try {
@@ -205,6 +217,9 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Xóa mềm (Soft delete) học sinh. Chuyển trạng thái sang "Đã xóa" và đổi tên tài khoản để tránh trùng lặp sau này.
+     */
     public void deleteHocSinh(String maHocSinh) {
         String sql = "UPDATE HocSinh SET TrangThai = N'Đã xóa', TenTK = CONCAT(LEFT(TenTK, 25), '_d', MaHocSinh) WHERE MaHocSinh = ?";
         try {
@@ -216,6 +231,9 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Kiểm tra đăng nhập (Authentication) cho Phụ huynh dựa trên tài khoản học sinh.
+     */
     public boolean checkLogin(String tenTK, String matKhau) {
         String sql = "SELECT * FROM HocSinh WHERE TenTK = ? AND MatKhau = ? AND (TrangThai IS NULL OR TrangThai != N'Đã xóa')";
         try {
@@ -313,6 +331,9 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Đổi mật khẩu đăng nhập cho tài khoản phụ huynh/học sinh.
+     */
     public boolean updatePassword(String maHocSinh, String newPassword) {
         String sql = "UPDATE HocSinh SET MatKhau = ? WHERE MaHocSinh = ?";
         try {
@@ -326,6 +347,9 @@ public class HocSinhDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Kiểm tra xem Email đã tồn tại trong hệ thống (ở cả bảng HocSinh và Users) chưa, ngoại trừ một MaHocSinh cụ thể.
+     */
     public boolean checkEmailExist(String email, String excludeMaHocSinh) {
         if (email == null || email.trim().isEmpty()) {
             return false;

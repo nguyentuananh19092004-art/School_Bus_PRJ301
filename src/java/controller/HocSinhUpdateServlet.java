@@ -9,8 +9,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.HocSinh;
 
+/**
+ * Servlet quản lý chức năng cập nhật thông tin Học sinh.
+ * Cung cấp form chỉnh sửa và xử lý dữ liệu để lưu các thay đổi vào cơ sở dữ liệu.
+ */
 @WebServlet(name = "HocSinhUpdateServlet", urlPatterns = {"/hocsinh-edit"})
 public class HocSinhUpdateServlet extends HttpServlet {
+    /**
+     * Xử lý yêu cầu GET để hiển thị form cập nhật với thông tin hiện tại của Học sinh.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client (Mã học sinh)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -21,6 +33,15 @@ public class HocSinhUpdateServlet extends HttpServlet {
         request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
     }
 
+    /**
+     * Xử lý yêu cầu POST để cập nhật thông tin Học sinh.
+     * Kiểm tra tính hợp lệ của dữ liệu (trùng tên tài khoản, email với người khác).
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form cần cập nhật
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -12,9 +12,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý yêu cầu phân công người thay thế của Admin.
+ * Được sử dụng khi nhân viên (Tài xế, Giám thị, Kỹ thuật) xin nghỉ phép và Admin cần phân công người khác làm thay ca.
+ */
 @WebServlet(name = "AdminReplaceServlet", urlPatterns = {"/admin-replace"})
 public class AdminReplaceServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST để lưu thông tin người thay thế vào lịch trình.
+     * Cập nhật database và tự động gửi thông báo cho nhân viên mới được phân công.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form thay thế
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

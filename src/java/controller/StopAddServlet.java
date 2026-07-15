@@ -10,9 +10,22 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Stop;
 
+/**
+ * Servlet quản lý chức năng thêm điểm dừng (trạm) mới vào một tuyến đường.
+ * Chỉ tài khoản Admin mới có quyền truy cập và thực hiện thao tác thêm trạm.
+ */
 @WebServlet(name = "StopAddServlet", urlPatterns = {"/add-stop"})
 public class StopAddServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST để thêm một điểm dừng mới.
+     * Tạo mới một điểm dừng (Stop) sau đó gắn nó vào tuyến đường với thứ tự hiển thị tự động tăng.
+     * 
+     * @param request đối tượng HttpServletRequest chứa thông tin về điểm dừng (tên, địa chỉ, tọa độ, thời gian)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

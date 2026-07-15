@@ -16,9 +16,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý các hành động nghiệp vụ của Kỹ thuật viên (Bảo dưỡng).
+ * Quản lý quy trình xử lý sự cố: Điều xe thay thế, Đến nơi, Sửa chữa, Bàn giao và Hoàn tất bảo dưỡng.
+ */
 @WebServlet(name = "TechnicianActionServlet", urlPatterns = {"/technician-action"})
 public class TechnicianActionServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST từ giao diện Technician Dashboard.
+     * Điều hướng các hành động (action) như dispatch_bus, arrive_incident, resolve_incident, finish_maintenance.
+     * Cập nhật trạng thái sự cố và trạng thái xe bus tương ứng trong database.
+     * 
+     * @param request đối tượng HttpServletRequest chứa hành động của kỹ thuật viên
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

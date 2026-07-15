@@ -15,9 +15,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý các hành động trong quá trình thực hiện ca làm việc của Tài xế.
+ * Bao gồm: Bắt đầu di chuyển, Báo cáo sự cố, Đổi xe, Kết thúc chuyến đi.
+ */
 @WebServlet(name = "DriverActionServlet", urlPatterns = {"/driver-action"})
 public class DriverActionServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST từ giao diện Dashboard của Tài xế.
+     * Dựa vào tham số `action` để thực hiện cập nhật trạng thái lịch trình, tình trạng xe và ghi nhận sự cố.
+     * 
+     * @param request đối tượng HttpServletRequest chứa hành động và dữ liệu liên quan
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Quản lý danh sách Xe Bus.
+    Hiển thị thông tin toàn bộ các xe trong hệ thống, cung cấp chức năng Thêm, Sửa, Xóa và xem Lịch sử bảo dưỡng.
+--%>
 <%@page import="java.util.List"%>
 <%@page import="model.Bus"%>
 <%@page import="model.BusMaintenance"%>

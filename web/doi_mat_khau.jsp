@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Đổi mật khẩu.
+    Dành cho người dùng đã đăng nhập, cho phép họ thay đổi mật khẩu hiện tại bằng cách nhập mật khẩu cũ và mới.
+--%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

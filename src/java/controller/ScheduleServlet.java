@@ -19,9 +19,23 @@ import model.Route;
 import model.Schedule;
 import model.User;
 
+/**
+ * Servlet quản lý chức năng xếp lịch (phân ca) cho tài xế, giám thị và xe bus.
+ * Là trung tâm xử lý logic lịch trình, bao gồm kiểm tra xung đột, sức chứa, trạng thái nhân sự (nghỉ phép), và tình trạng xe.
+ */
 @WebServlet(name = "ScheduleServlet", urlPatterns = {"/ScheduleServlet"})
 public class ScheduleServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu GET để hiển thị giao diện quản lý lịch trình theo ngày.
+     * Tính toán số lượng học sinh, kiểm tra năng lực đáp ứng, và lọc danh sách nhân sự/xe sẵn sàng.
+     * Xử lý cả chức năng xóa lịch trình thông qua tham số `action`.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -175,6 +189,15 @@ public class ScheduleServlet extends HttpServlet {
         request.getRequestDispatcher("schedule_management.jsp").forward(request, response);
     }
 
+    /**
+     * Xử lý yêu cầu POST để thêm mới hoặc thay đổi lịch trình.
+     * Thực hiện nhiều tầng kiểm tra nghiệp vụ: thời gian quá hạn, nghỉ phép, xung đột lịch, vượt sức chứa và trạng thái xe.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form xếp lịch
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

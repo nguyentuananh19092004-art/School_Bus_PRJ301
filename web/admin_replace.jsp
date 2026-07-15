@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Bố trí nhân sự thay thế.
+    Admin dùng trang này để chọn và thay thế tài xế hoặc giám thị khác cho các ca làm việc bị trống do nhân sự nghỉ phép.
+--%>
 <%@page import="java.util.List"%>
 <%@page import="model.User"%>
 <%@page import="model.Schedule"%>

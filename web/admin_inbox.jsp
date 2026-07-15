@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Hòm thư duyệt phép (Admin).
+    Hiển thị danh sách các đơn xin nghỉ phép của nhân viên và cho phép Admin Duyệt hoặc Từ chối đơn.
+--%>
 <%@page import="java.util.List"%>
 <%@page import="model.UserLeave"%>
 <%@page import="model.User"%>

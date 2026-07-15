@@ -16,6 +16,9 @@ import model.Schedule;
  */
 public class ScheduleDAO extends DBContext {
 
+    /**
+     * Trả về đối tượng Connection hiện tại đang được sử dụng bởi DAO này.
+     */
     public Connection getConnection() {
         return connection;
     }
@@ -98,6 +101,9 @@ public class ScheduleDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Thêm một lịch trình (chuyến đi) mới vào hệ thống.
+     */
     public boolean insertSchedule(Schedule s) {
         String sql = "INSERT INTO Schedules (Date, Direction, RouteID, BusID, DriverID, MonitorID, Status, IncidentStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -118,6 +124,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Thêm một lịch trình "tràn" (Spillover) trong trường hợp không đủ tài xế/xe (chức năng dự phòng).
+     */
     public boolean insertSpilloverSchedule(Schedule s) {
         String sql = "INSERT INTO Schedules (Date, Direction, RouteID, BusID, DriverID, MonitorID, Status, IncidentStatus) VALUES (?, ?, ?, NULL, NULL, ?, ?, ?)";
         try {
@@ -140,6 +149,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Kiểm tra xem có xảy ra xung đột lịch trình (trùng xe, trùng tài xế, trùng giám thị) vào cùng một thời điểm hay không.
+     */
     public boolean isConflict(Date date, String direction, int driverID, int monitorID, int busID) {
         String sql = "SELECT COUNT(*) FROM Schedules WHERE Date = ? AND Direction = ? AND (DriverID = ? OR MonitorID = ? OR BusID = ?)";
         try {
@@ -190,6 +202,10 @@ public class ScheduleDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Lấy lịch trình đang diễn ra của một Tài xế trong ngày hôm nay.
+     * Dùng để hiển thị trạng thái chuyến đi lên màn hình (Dashboard).
+     */
     public Schedule getActiveScheduleByDriver(int driverID) {
         String sql = "SELECT TOP 1 * FROM Schedules WHERE DriverID = ? AND Date = CAST(GETDATE() AS DATE) AND Status != 'COMPLETED' AND Status != 'CANCELLED' ORDER BY CASE WHEN Direction = 'TO_SCHOOL' THEN 1 ELSE 2 END ASC";
         try {
@@ -247,6 +263,9 @@ public class ScheduleDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy danh sách các lịch trình trong tương lai bị ảnh hưởng do xe được phân công đã bị đưa vào xưởng bảo dưỡng.
+     */
     public List<Schedule> getAffectedFutureSchedules() {
         List<Schedule> list = new ArrayList<>();
         String sql = "SELECT s.* FROM Schedules s " +
@@ -278,6 +297,9 @@ public class ScheduleDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy thông tin chuyến xe đang hoạt động đi qua một điểm dừng cụ thể (để phụ huynh theo dõi).
+     */
     public Schedule getActiveScheduleForStop(int stopID) {
         String sql = "SELECT TOP 1 s.* FROM Schedules s " +
                      "JOIN RouteStops rs ON s.RouteID = rs.RouteID " +
@@ -308,6 +330,9 @@ public class ScheduleDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Xóa một lịch trình (và xóa tất cả dữ liệu phụ thuộc như điểm danh, tiến độ).
+     */
     public boolean deleteSchedule(int id) {
         String deleteAttendances = "DELETE FROM Attendances WHERE ScheduleID = ?";
         String deleteProgress = "DELETE FROM ScheduleProgress WHERE ScheduleID = ?";
@@ -379,6 +404,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Lấy toàn bộ lịch trực của các kỹ thuật viên.
+     */
     public List<model.TechnicianSchedule> getTechnicianSchedules() {
         cleanPastIncompleteSchedules();
         List<model.TechnicianSchedule> list = new ArrayList<>();
@@ -403,6 +431,9 @@ public class ScheduleDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Thêm một lịch trực mới cho kỹ thuật viên.
+     */
     public boolean insertTechnicianSchedule(int technicianID, Date date) {
         String sql = "INSERT INTO TechnicianSchedules (TechnicianID, Date, Status) VALUES (?, ?, 'PENDING')";
         try {
@@ -416,6 +447,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Xóa một lịch trực của kỹ thuật viên.
+     */
     public boolean deleteTechnicianSchedule(int id) {
         String sql = "DELETE FROM TechnicianSchedules WHERE TechScheduleID = ?";
         try {
@@ -428,6 +462,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Cập nhật trạng thái lịch trực của kỹ thuật viên (ví dụ: IN_PROGRESS, COMPLETED).
+     */
     public boolean updateTechnicianScheduleStatus(int id, String status) {
         String sql = "UPDATE TechnicianSchedules SET Status = ? WHERE TechScheduleID = ?";
         try {
@@ -441,6 +478,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Lấy danh sách lịch trực của một kỹ thuật viên cụ thể.
+     */
     public List<model.TechnicianSchedule> getTechnicianSchedulesByUser(int technicianID) {
         cleanPastIncompleteSchedules();
         List<model.TechnicianSchedule> list = new ArrayList<>();
@@ -466,6 +506,9 @@ public class ScheduleDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy danh sách lịch trực của một kỹ thuật viên trong một ngày cụ thể.
+     */
     public List<model.TechnicianSchedule> getTechnicianSchedulesByUserAndDate(int technicianID, java.sql.Date date) {
         cleanPastIncompleteSchedules();
         List<model.TechnicianSchedule> list = new ArrayList<>();
@@ -520,6 +563,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Phân công một kỹ thuật viên cụ thể để xử lý sự cố xe hỏng trên đường.
+     */
     public boolean updateHandlingTechID(int scheduleID, int handlingTechID) {
         String sql = "UPDATE Schedules SET HandlingTechID = ? WHERE ScheduleID = ?";
         try {
@@ -566,6 +612,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Lấy thông tin chi tiết một lịch trình dựa trên ScheduleID.
+     */
     public Schedule getScheduleById(int scheduleID) {
         String sql = "SELECT * FROM Schedules WHERE ScheduleID = ?";
         try {
@@ -594,6 +643,9 @@ public class ScheduleDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Thay đổi/Cập nhật xe bus cho một lịch trình.
+     */
     public boolean updateScheduleBus(int scheduleID, int busID) {
         String sql = "UPDATE Schedules SET BusID = ? WHERE ScheduleID = ?";
         try {
@@ -607,6 +659,9 @@ public class ScheduleDAO extends DBContext {
         }
     }
 
+    /**
+     * Đổi kỹ thuật viên trực cho một ca bảo dưỡng cụ thể (ví dụ khi kỹ thuật viên ban đầu xin phép).
+     */
     public boolean updateTechnicianSchedulePersonnel(int techScheduleID, int newTechnicianID) {
         String sql = "UPDATE TechnicianSchedules SET TechnicianID = ? WHERE TechScheduleID = ?";
         try {

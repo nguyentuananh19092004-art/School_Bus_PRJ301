@@ -9,9 +9,22 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet quản lý chức năng xếp lịch làm việc cho Kỹ thuật viên (Bảo dưỡng).
+ * Cung cấp chức năng thêm và xóa ca trực cho nhân viên bảo trì.
+ */
 @WebServlet(name = "TechnicianScheduleServlet", urlPatterns = {"/tech-schedule"})
 public class TechnicianScheduleServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST để thêm mới hoặc xóa lịch trực của Kỹ thuật viên.
+     * Kiểm tra tính hợp lệ về ngày và trạng thái nghỉ phép trước khi thêm.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,6 +78,14 @@ public class TechnicianScheduleServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Xử lý yêu cầu GET bằng cách chuyển tiếp sang phương thức doPost.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

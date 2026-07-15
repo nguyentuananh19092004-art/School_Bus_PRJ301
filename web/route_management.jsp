@@ -2,6 +2,10 @@
 <%@page import="model.Route"%>
 <%@page import="model.Stop"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Quản lý Tuyến đường (Lộ trình).
+    Cho phép quản trị viên xem danh sách tuyến, thêm tuyến mới, quản lý các điểm dừng (stops) trên tuyến, và sắp xếp thứ tự điểm dừng.
+--%>
 <%
     // Kiểm tra đăng nhập
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {

@@ -13,8 +13,21 @@ import model.User;
 import java.sql.Date;
 import java.time.LocalDate;
 
+/**
+ * Servlet xử lý việc hiển thị danh sách người dùng (Nhân viên) theo vai trò.
+ * Hỗ trợ lọc danh sách người dùng theo vai trò (DRIVER, MONITOR, v.v.) và ngày làm việc.
+ */
 @WebServlet(name = "UserListServlet", urlPatterns = {"/user-list"})
 public class UserListServlet extends HttpServlet {
+    /**
+     * Xử lý yêu cầu GET để lấy và hiển thị danh sách người dùng.
+     * Lấy tham số vai trò và ngày từ yêu cầu, nếu không có sẽ dùng giá trị mặc định.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

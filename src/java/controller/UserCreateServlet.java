@@ -9,8 +9,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 
+/**
+ * Servlet quản lý chức năng tạo mới người dùng (Nhân viên).
+ * Cung cấp form tạo mới và xử lý dữ liệu được gửi lên từ form.
+ */
 @WebServlet(name = "UserCreateServlet", urlPatterns = {"/user-create"})
 public class UserCreateServlet extends HttpServlet {
+    /**
+     * Xử lý yêu cầu GET để hiển thị form tạo mới người dùng.
+     * Truyền vai trò (role) hiện tại vào form để thiết lập mặc định.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -19,6 +32,16 @@ public class UserCreateServlet extends HttpServlet {
         request.getRequestDispatcher("user_form.jsp").forward(request, response);
     }
 
+    /**
+     * Xử lý yêu cầu POST để thêm mới người dùng vào hệ thống.
+     * Kiểm tra tính hợp lệ của dữ liệu (tên đăng nhập, số điện thoại, email, tên miền email).
+     * Nếu có lỗi, quay lại form với thông báo lỗi. Nếu thành công, thêm vào cơ sở dữ liệu và chuyển hướng.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -1,4 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Dashboard của Admin.
+    Hiển thị tổng quan hệ thống (số lượng học sinh, xe, tuyến, tài khoản).
+    Cung cấp các liên kết truy cập nhanh đến các chức năng quản lý, phân ca, và hòm thư duyệt phép.
+--%>
 <%
     // Kiểm tra đăng nhập
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {

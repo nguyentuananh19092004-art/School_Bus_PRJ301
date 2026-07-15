@@ -1,5 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*"%>
+<%-- 
+    Trang Dashboard của Tài xế.
+    Hiển thị thông tin lịch trình (chuyến xe) hiện tại trong ngày của tài xế.
+    Cung cấp các chức năng để tài xế thao tác trong ca: Bắt đầu chuyến, Báo cáo sự cố (hỏng xe), Đổi xe, Kết thúc chuyến.
+--%>
 <%
     if(session.getAttribute("userRole") == null || !"taixe".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");

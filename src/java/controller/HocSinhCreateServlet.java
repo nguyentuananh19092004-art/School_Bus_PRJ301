@@ -9,14 +9,36 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.HocSinh;
 
+/**
+ * Servlet quản lý chức năng thêm mới Học sinh vào hệ thống.
+ * Cung cấp form đăng ký và xử lý dữ liệu được gửi lên từ form.
+ */
 @WebServlet(name = "HocSinhCreateServlet", urlPatterns = {"/hocsinh-add"})
 public class HocSinhCreateServlet extends HttpServlet {
+    /**
+     * Xử lý yêu cầu GET để hiển thị form thêm mới Học sinh.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
     }
 
+    /**
+     * Xử lý yêu cầu POST để thêm mới Học sinh.
+     * Kiểm tra tính hợp lệ của dữ liệu (trùng mã học sinh, tên tài khoản, email).
+     * Nếu có lỗi, quay lại form với thông báo lỗi. Nếu thành công, lưu vào cơ sở dữ liệu và chuyển hướng.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

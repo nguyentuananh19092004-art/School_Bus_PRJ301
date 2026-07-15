@@ -9,8 +9,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 
+/**
+ * Servlet quản lý chức năng cập nhật thông tin người dùng (Nhân viên).
+ * Cung cấp form cập nhật và xử lý dữ liệu được gửi lên để lưu thay đổi.
+ */
 @WebServlet(name = "UserUpdateServlet", urlPatterns = {"/user-update"})
 public class UserUpdateServlet extends HttpServlet {
+    /**
+     * Xử lý yêu cầu GET để hiển thị form cập nhật với thông tin hiện tại của người dùng.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client (ID người dùng)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -23,6 +35,15 @@ public class UserUpdateServlet extends HttpServlet {
         request.getRequestDispatcher("user_form.jsp").forward(request, response);
     }
 
+    /**
+     * Xử lý yêu cầu POST để cập nhật thông tin người dùng.
+     * Kiểm tra tính hợp lệ của dữ liệu tương tự như khi tạo mới (tên đăng nhập, số điện thoại, email).
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form cần cập nhật
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

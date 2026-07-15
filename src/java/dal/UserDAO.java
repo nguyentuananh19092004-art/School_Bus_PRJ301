@@ -14,6 +14,9 @@ import model.User;
  */
 public class UserDAO extends DBContext {
 
+    /**
+     * Trả về đối tượng Connection hiện tại đang được sử dụng bởi DAO này.
+     */
     public Connection getConnection() {
         return connection;
     }
@@ -140,6 +143,9 @@ public class UserDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy toàn bộ người dùng trong hệ thống (bao gồm cả những người đã bị xóa mềm).
+     */
     public List<User> getAllUsersIncludingDeleted() {
         List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM Users";
@@ -293,6 +299,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Kiểm tra xem tên đăng nhập (Username) đã tồn tại trong hệ thống chưa, ngoại trừ một UserID cụ thể (dùng khi cập nhật).
+     */
     public boolean checkUsernameExist(String username, int excludeUserId) {
         String sql = "SELECT 1 FROM Users WHERE Username = ? AND UserID != ?";
         try {
@@ -309,6 +318,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Kiểm tra xem số điện thoại đã tồn tại trong hệ thống chưa, ngoại trừ một UserID cụ thể.
+     */
     public boolean checkPhoneExist(String phone, int excludeUserId) {
         if (phone == null || phone.trim().isEmpty()) {
             return false;
@@ -346,6 +358,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Lấy tên đăng nhập (Username) của người dùng dựa trên UserID.
+     */
     public String getUsernameById(int userID) {
         String sql = "SELECT Username FROM Users WHERE UserID = ?";
         try {
@@ -405,6 +420,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Lấy thông tin chi tiết một đơn xin nghỉ phép dựa trên LeaveID.
+     */
     public model.UserLeave getLeaveById(int leaveID) {
         String sql = "SELECT * FROM UserLeaves WHERE LeaveID = ?";
         try {
@@ -443,6 +461,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Cập nhật trạng thái (Status) chung của người dùng (ví dụ: "Hoạt động", "Nghỉ").
+     */
     public boolean updateUserStatus(int userID, String status) {
         String sql = "UPDATE Users SET Status = ? WHERE UserID = ?";
         try {
@@ -456,6 +477,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Kiểm tra xem nhân viên có đơn xin nghỉ phép nào đã được duyệt trong một ngày cụ thể hay không.
+     */
     public boolean isLeaveApproved(int userID, java.sql.Date date) {
         String sql = "SELECT 1 FROM UserLeaves WHERE UserID = ? AND LeaveDate = ? AND Status = 'APPROVED'";
         try {
@@ -472,6 +496,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Đổi mật khẩu cho người dùng.
+     */
     public boolean updatePassword(int userID, String newPassword) {
         String sql = "UPDATE Users SET Password = ? WHERE UserID = ?";
         try {
@@ -485,6 +512,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Kiểm tra xem Email đã tồn tại trong hệ thống (ở cả bảng Users và HocSinh) chưa, ngoại trừ một UserID cụ thể.
+     */
     public boolean checkEmailExist(String email, int excludeUserId) {
         if (email == null || email.trim().isEmpty()) {
             return false;

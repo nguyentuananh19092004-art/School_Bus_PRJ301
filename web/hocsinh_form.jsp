@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Biểu mẫu Học sinh.
+    Dùng chung cho chức năng Thêm mới và Chỉnh sửa thông tin Học sinh.
+--%>
 <%@page import="model.HocSinh"%>
 <%
     HocSinh hs = (HocSinh) request.getAttribute("hs");

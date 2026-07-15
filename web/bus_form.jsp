@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Biểu mẫu Xe Bus.
+    Dùng chung cho chức năng Thêm mới và Chỉnh sửa thông tin xe bus (Biển số, sức chứa, trạng thái).
+--%>
 <%@page import="model.Bus"%>
 <%
     Bus bus = (Bus) request.getAttribute("bus");

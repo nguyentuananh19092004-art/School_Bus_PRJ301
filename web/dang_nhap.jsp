@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang hiển thị giao diện đăng nhập cho người dùng.
+    Bao gồm form nhập tài khoản, mật khẩu và xử lý hiển thị thông báo lỗi.
+--%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

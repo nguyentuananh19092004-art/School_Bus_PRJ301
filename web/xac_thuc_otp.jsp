@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Xác thực OTP.
+    Hiển thị giao diện nhập mã OTP được gửi về email để tiếp tục quá trình đổi mật khẩu.
+--%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

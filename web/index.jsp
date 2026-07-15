@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Landing Page (Trang Chủ Công Khai).
+    Hiển thị thông tin giới thiệu về hệ thống xe bus trường học, tính năng nổi bật và nút đăng nhập.
+--%>
 
 <!DOCTYPE html>
 <html lang="vi">

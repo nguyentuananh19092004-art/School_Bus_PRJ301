@@ -1,5 +1,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Quản lý danh sách Học sinh.
+    Hiển thị thông tin học sinh (Tên, Lớp, Phụ huynh, Tuyến, Trạng thái) và cung cấp chức năng Thêm, Sửa, Xóa.
+--%>
 <!DOCTYPE html>
 <html>
     <head>

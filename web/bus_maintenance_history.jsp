@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Lịch sử bảo dưỡng Xe Bus.
+    Hiển thị danh sách các lần bảo dưỡng/sửa chữa của một xe cụ thể, bao gồm mô tả lỗi và chi phí.
+--%>
 <%@page import="java.util.List"%>
 <%@page import="model.Bus"%>
 <%@page import="model.BusMaintenance"%>

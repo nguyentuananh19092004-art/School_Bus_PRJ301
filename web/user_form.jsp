@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Biểu mẫu Người dùng.
+    Dùng chung cho cả chức năng Thêm mới và Chỉnh sửa thông tin nhân viên (Tài xế/Giám thị/Kỹ thuật).
+--%>
 <%@page import="model.User"%>
 <%
     User u = (User) request.getAttribute("userObj");

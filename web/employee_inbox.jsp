@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Hòm thư & Nghỉ phép (Dành cho nhân viên).
+    Hiển thị thông báo, danh sách đơn xin nghỉ phép đã gửi và cung cấp form để nhân viên nộp đơn xin nghỉ.
+--%>
 <%@page import="model.Notification"%>
 <%@page import="java.util.List"%>
 <%

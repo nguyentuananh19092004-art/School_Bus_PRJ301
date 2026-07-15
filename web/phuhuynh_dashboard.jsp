@@ -1,6 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="model.*"%>
 <%@page import="java.util.List"%>
+<%-- 
+    Trang Dashboard của Phụ huynh.
+    Cung cấp giao diện để phụ huynh theo dõi tiến độ chuyến xe bus của con (xe đến đâu, đã lên/xuống chưa).
+    Cho phép phụ huynh thực hiện báo nghỉ, xin nghỉ phép các ngày tới, đổi điểm đón, hoặc hủy dịch vụ.
+--%>
 <%
     if(session.getAttribute("userRole") == null || !"phuhuynh".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");

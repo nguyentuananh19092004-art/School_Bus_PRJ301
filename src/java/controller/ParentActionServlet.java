@@ -11,9 +11,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý các yêu cầu của Phụ huynh từ giao diện Parent Dashboard.
+ * Bao gồm: Xin nghỉ phép cho học sinh, Đổi điểm đón/trả, Ngừng dịch vụ và Đánh dấu đã đọc thông báo.
+ */
 @WebServlet(name = "ParentActionServlet", urlPatterns = {"/parent-action"})
 public class ParentActionServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST chứa các hành động nghiệp vụ từ Phụ huynh.
+     * Kiểm tra quyền, lấy thông tin học sinh liên kết với tài khoản phụ huynh và thực hiện yêu cầu tương ứng.
+     * 
+     * @param request đối tượng HttpServletRequest chứa các tham số hành động
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

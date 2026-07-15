@@ -13,9 +13,22 @@ import jakarta.servlet.http.HttpSession;
 import model.Route;
 import model.Stop;
 
+/**
+ * Servlet quản lý chức năng xem thông tin tuyến đường và các điểm dừng.
+ * Cho phép Admin xem danh sách tuyến và chi tiết các trạm (điểm dừng) của từng tuyến.
+ */
 @WebServlet(name = "RouteManagementServlet", urlPatterns = {"/route-management"})
 public class RouteManagementServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu GET để hiển thị trang quản lý tuyến đường.
+     * Lấy danh sách tất cả các tuyến và chi tiết các điểm dừng của một tuyến cụ thể nếu được chọn.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client (ID tuyến)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,6 +74,14 @@ public class RouteManagementServlet extends HttpServlet {
         request.getRequestDispatcher("route_management.jsp").forward(request, response);
     }
 
+    /**
+     * Xử lý yêu cầu POST tương tự như GET để tiện cho các thao tác chuyển hướng form.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

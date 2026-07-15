@@ -3,6 +3,10 @@
 <%@page import="model.Bus"%>
 <%@page import="model.User"%>
 <%@page import="java.util.List"%>
+<%-- 
+    Trang Quản lý Lịch trình (Phân ca).
+    Admin sử dụng trang này để phân bổ xe bus, tài xế và giám thị cho từng tuyến đường theo từng ngày.
+--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if(session.getAttribute("userRole") == null || !"admin".equals(session.getAttribute("userRole"))) {

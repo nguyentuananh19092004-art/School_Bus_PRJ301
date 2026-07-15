@@ -14,9 +14,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet quản lý chức năng xem lịch trình cá nhân dành cho Nhân viên (Tài xế, Giám thị, Kỹ thuật).
+ * Hiển thị các ca làm việc được phân công cho nhân viên theo từng ngày.
+ */
 @WebServlet(name = "EmployeeScheduleServlet", urlPatterns = {"/employee-schedule"})
 public class EmployeeScheduleServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu GET để lấy và hiển thị lịch làm việc của nhân viên đang đăng nhập.
+     * Hỗ trợ lọc lịch làm việc theo ngày và theo vai trò của nhân viên.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client (ngày xem lịch)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

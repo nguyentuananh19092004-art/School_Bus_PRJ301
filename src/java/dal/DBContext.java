@@ -15,11 +15,17 @@ import java.util.logging.Logger;
  */
 
 /**
+ * Lớp cơ sở (Base class) quản lý kết nối đến cơ sở dữ liệu.
+ * Tất cả các lớp DAO khác trong hệ thống sẽ kế thừa từ lớp này để tái sử dụng kết nối.
  *
  * @author FPT University - PRJ30X
  */
 public class DBContext {
     protected Connection connection;
+    /**
+     * Khởi tạo DBContext và thiết lập kết nối đến cơ sở dữ liệu SQL Server.
+     * Đọc các cấu hình từ file ConnectDB.properties để thiết lập chuỗi kết nối.
+     */
     public DBContext() {
         //@Students: You are not allowed to edit this method  
         try {

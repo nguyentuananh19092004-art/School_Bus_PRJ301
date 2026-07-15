@@ -2,6 +2,11 @@
 <%@page import="model.*"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
+<%-- 
+    Trang Dashboard của Giám thị (Monitor).
+    Hiển thị danh sách học sinh theo từng điểm dừng (trạm) của chuyến xe hiện tại.
+    Cho phép Giám thị điểm danh học sinh, xác nhận đã đến điểm dừng, và gọi phụ huynh.
+--%>
 <%
     if(session.getAttribute("userRole") == null || !"giamthi".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");

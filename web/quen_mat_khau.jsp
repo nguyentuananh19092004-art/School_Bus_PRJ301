@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Quên mật khẩu.
+    Hiển thị form yêu cầu người dùng nhập username để gửi mã OTP khôi phục mật khẩu qua email.
+--%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

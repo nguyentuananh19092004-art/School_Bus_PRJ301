@@ -9,8 +9,21 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet quản lý chức năng Ngừng dịch vụ cho Học sinh.
+ * Cập nhật trạng thái của học sinh thành "Ngừng dịch vụ". Chỉ Admin mới có quyền thực hiện.
+ */
 @WebServlet(name = "HocSinhStopServiceServlet", urlPatterns = {"/hocsinh-stop-service"})
 public class HocSinhStopServiceServlet extends HttpServlet {
+    /**
+     * Xử lý yêu cầu GET để thay đổi trạng thái dịch vụ của học sinh.
+     * Kiểm tra quyền của người dùng trước khi thực hiện thao tác.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client (Mã học sinh)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

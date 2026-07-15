@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Đặt lại mật khẩu.
+    Hiển thị giao diện cho người dùng nhập mật khẩu mới sau khi xác thực OTP thành công.
+--%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

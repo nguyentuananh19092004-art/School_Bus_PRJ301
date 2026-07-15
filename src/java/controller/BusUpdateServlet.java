@@ -9,9 +9,21 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet quản lý chức năng cập nhật thông tin Xe bus.
+ * Bao gồm cả xử lý logic tự động hủy lịch trình nếu xe chuyển sang trạng thái "Bảo dưỡng/Sửa chữa".
+ */
 @WebServlet(name = "BusUpdateServlet", urlPatterns = {"/bus-update"})
 public class BusUpdateServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu GET để hiển thị form cập nhật thông tin xe.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client (ID xe)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -27,6 +39,15 @@ public class BusUpdateServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Xử lý yêu cầu POST để cập nhật thông tin Xe bus.
+     * Xử lý cảnh báo trùng biển số và gửi thông báo nếu xe vào trạng thái bảo dưỡng.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form cần cập nhật
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -59,6 +80,11 @@ public class BusUpdateServlet extends HttpServlet {
         response.sendRedirect("bus-list");
     }
     
+    /**
+     * Thông báo cho Admin và hủy các lịch trình (trong vòng 2 ngày) khi xe vào trạng thái bảo dưỡng.
+     * 
+     * @param busID ID của xe bus được cập nhật thành trạng thái "Bảo dưỡng/Sửa chữa"
+     */
     private void notifyAdminForFutureSchedules(int busID) {
         dal.UserDAO userDAO = new dal.UserDAO();
         java.util.List<model.User> admins = userDAO.getUsersByRole("ADMIN");

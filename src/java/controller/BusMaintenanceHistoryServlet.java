@@ -12,8 +12,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet quản lý chức năng xem lịch sử bảo dưỡng của một xe bus cụ thể.
+ * Chỉ cho phép người dùng có quyền admin (hoặc quyền tương đương) truy cập.
+ */
 @WebServlet(name = "BusMaintenanceHistoryServlet", urlPatterns = {"/bus-maintenance-history"})
 public class BusMaintenanceHistoryServlet extends HttpServlet {
+    /**
+     * Xử lý yêu cầu GET để lấy và hiển thị chi tiết lịch sử bảo dưỡng của xe.
+     * 
+     * @param request đối tượng HttpServletRequest chứa yêu cầu của client (ID xe)
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

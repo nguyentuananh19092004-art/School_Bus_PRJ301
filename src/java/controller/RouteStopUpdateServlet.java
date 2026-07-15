@@ -9,9 +9,22 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet quản lý chức năng cập nhật thời gian dự kiến tại các điểm dừng (trạm).
+ * Chỉ tài khoản có quyền Admin mới được phép thực hiện thao tác này.
+ */
 @WebServlet(name = "RouteStopUpdateServlet", urlPatterns = {"/update-route-stop"})
 public class RouteStopUpdateServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST để cập nhật thời gian đi và về tại một điểm dừng trên tuyến.
+     * Kiểm tra quyền đăng nhập, lấy dữ liệu thời gian mới và lưu vào cơ sở dữ liệu.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu form cần cập nhật
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

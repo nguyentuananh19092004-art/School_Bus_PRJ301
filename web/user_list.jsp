@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%-- 
+    Trang Quản lý danh sách người dùng (Nhân viên/Tài xế/Giám thị/Kỹ thuật).
+    Hiển thị bảng danh sách các tài khoản trong hệ thống và cung cấp các chức năng Thêm, Sửa, Xóa.
+--%>
 <%@page import="java.util.List"%>
 <%@page import="model.User"%>
 <%

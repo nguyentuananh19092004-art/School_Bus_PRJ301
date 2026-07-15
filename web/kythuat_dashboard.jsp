@@ -3,6 +3,13 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
+<%-- 
+    Trang Dashboard của Kỹ thuật viên.
+    Cung cấp giao diện để nhân viên kỹ thuật thực hiện:
+    - Bắt đầu/Kết thúc ca trực.
+    - Xử lý các sự cố xe trên đường (Điều xe dự phòng, đến nơi, bàn giao xe mới, chuyển xe cũ về xưởng).
+    - Danh sách các xe đang trong trạng thái bảo dưỡng và nút xác nhận hoàn tất bảo dưỡng.
+--%>
 <%
     if(session.getAttribute("userRole") == null || !"kythuat".equals(session.getAttribute("userRole"))) {
         response.sendRedirect("dang_nhap.jsp");

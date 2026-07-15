@@ -10,9 +10,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý các hành động của Giám thị (Monitor) trên xe bus.
+ * Quản lý việc điểm danh học sinh, cập nhật tiến độ trạm dừng, và gửi thông báo cho phụ huynh.
+ */
 @WebServlet(name = "MonitorActionServlet", urlPatterns = {"/monitor-action"})
 public class MonitorActionServlet extends HttpServlet {
 
+    /**
+     * Xử lý yêu cầu POST từ Dashboard của Giám thị.
+     * Các hành động bao gồm: Điểm danh (lên/xuống xe), Đến trạm, Gửi cảnh báo phụ huynh, và Hoàn thành chuyến.
+     * Tự động gửi thông báo đến tài khoản của phụ huynh tùy theo sự kiện.
+     * 
+     * @param request đối tượng HttpServletRequest chứa dữ liệu sự kiện từ giám thị
+     * @param response đối tượng HttpServletResponse dùng để gửi phản hồi
+     * @throws ServletException nếu có lỗi xảy ra trong quá trình xử lý servlet
+     * @throws IOException nếu có lỗi I/O xảy ra
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

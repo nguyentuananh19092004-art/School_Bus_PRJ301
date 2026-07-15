@@ -3,6 +3,10 @@
 <%@page import="dal.BusDAO"%>
 <%@page import="dal.UserDAO"%>
 <%@page import="java.util.List"%>
+<%-- 
+    Trang Xem Lịch làm việc cá nhân.
+    Dành cho Tài xế, Giám thị hoặc Kỹ thuật viên để xem lịch phân công nhiệm vụ của cá nhân trong một tuần.
+--%>
 <%
     if(session.getAttribute("userRole") == null || (!"taixe".equals(session.getAttribute("userRole")) && !"giamthi".equals(session.getAttribute("userRole")) && !"kythuat".equals(session.getAttribute("userRole")))) {
         response.sendRedirect("dang_nhap.jsp");
