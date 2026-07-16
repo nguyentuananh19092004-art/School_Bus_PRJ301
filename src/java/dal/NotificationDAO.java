@@ -7,8 +7,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO class quản lý Hệ thống Thông báo (Notifications) cho người dùng.
+ * Xử lý việc gửi, nhận và đánh dấu trạng thái đọc thông báo.
+ */
 public class NotificationDAO extends DBContext {
 
+    /**
+     * Tạo một thông báo mới gửi đến một người dùng cụ thể.
+     * @param username Tên đăng nhập của người nhận
+     * @param message Nội dung thông báo
+     */
     public void insertNotification(String username, String message) {
         String sql = "INSERT INTO Notifications (UserID, Message) SELECT UserID, ? FROM Users WHERE Username = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -20,6 +29,11 @@ public class NotificationDAO extends DBContext {
         }
     }
 
+    /**
+     * Lấy danh sách toàn bộ thông báo của một người dùng.
+     * @param username Tên đăng nhập của người dùng cần lấy thông báo
+     * @return Danh sách các thông báo, sắp xếp theo thời gian mới nhất lên đầu
+     */
     public List<Notification> getNotificationsByUsername(String username) {
         List<Notification> list = new ArrayList<>();
         String sql = "SELECT n.NotifID, n.UserID, u.Username, n.Message, n.CreatedAt, n.IsRead " +
@@ -46,6 +60,10 @@ public class NotificationDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Đánh dấu một thông báo cụ thể là đã đọc.
+     * @param notifID ID của thông báo cần đánh dấu
+     */
     public void markAsRead(int notifID) {
         String sql = "UPDATE Notifications SET IsRead = 1 WHERE NotifID = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -56,6 +74,10 @@ public class NotificationDAO extends DBContext {
         }
     }
 
+    /**
+     * Đánh dấu tất cả các thông báo chưa đọc của một người dùng thành đã đọc.
+     * @param username Tên đăng nhập của người dùng
+     */
     public void markAllAsRead(String username) {
         String sql = "UPDATE Notifications SET IsRead = 1 WHERE UserID = (SELECT UserID FROM Users WHERE Username = ?) AND IsRead = 0";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {

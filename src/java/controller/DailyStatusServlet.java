@@ -10,9 +10,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * Servlet xử lý các thay đổi trạng thái nhanh trong ngày của Nhân sự và Xe bus.
+ * Ví dụ: Báo cáo nghỉ đột xuất, báo cáo xe hỏng đi bảo dưỡng khẩn cấp.
+ */
 @WebServlet(name = "DailyStatusServlet", urlPatterns = {"/daily-status"})
 public class DailyStatusServlet extends HttpServlet {
 
+    /**
+     * Xử lý các action chuyển trạng thái.
+     * Tự động kiểm tra nếu việc báo bảo dưỡng ảnh hưởng tới lịch chạy đã xếp thì gửi thông báo khẩn cho Admin.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

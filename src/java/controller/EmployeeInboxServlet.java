@@ -9,9 +9,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý hộp thư đến (Inbox) của nhân viên (Tài xế, Giám thị, Kỹ thuật viên).
+ * Nơi nhân viên xem thông báo hệ thống và nộp đơn xin nghỉ phép.
+ */
 @WebServlet(name = "EmployeeInboxServlet", urlPatterns = {"/employee-inbox"})
 public class EmployeeInboxServlet extends HttpServlet {
 
+    /**
+     * Lấy danh sách thông báo của người dùng và tự động đánh dấu tất cả là "Đã đọc".
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

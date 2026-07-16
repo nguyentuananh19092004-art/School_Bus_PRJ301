@@ -10,15 +10,26 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
 
+/**
+ * Servlet xử lý việc đặt lại mật khẩu mới sau khi người dùng xác thực OTP thành công.
+ * Áp dụng cho cả bảng Users và bảng HocSinh (Phụ huynh).
+ */
 @WebServlet(name = "ResetPasswordServlet", urlPatterns = {"/ResetPasswordServlet"})
 public class ResetPasswordServlet extends HttpServlet {
 
+    /**
+     * Hiển thị giao diện form nhập mật khẩu mới.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("dat_lai_mat_khau.jsp").forward(request, response);
     }
 
+    /**
+     * Nhận mật khẩu mới, kiểm tra tính hợp lệ và cập nhật vào CSDL.
+     * Xóa các thông tin OTP trong Session sau khi hoàn tất.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

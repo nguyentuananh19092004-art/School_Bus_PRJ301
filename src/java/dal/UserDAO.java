@@ -8,12 +8,20 @@ import java.util.ArrayList;
 import java.util.List;
 import model.User;
 
+/**
+ * DAO class quản lý dữ liệu Người dùng (Users) và Đơn xin phép (UserLeaves).
+ * Thực hiện xác thực đăng nhập, phân quyền, và quản lý nhân sự.
+ */
 public class UserDAO extends DBContext {
 
     public Connection getConnection() {
         return connection;
     }
 
+    /**
+     * Kiểm tra xem nhân viên có đang được phân công lịch làm việc trong tương lai hay không.
+     * Dùng để ngăn chặn việc xóa hoặc vô hiệu hóa tài khoản nhân viên đang có lịch.
+     */
     public boolean hasFutureSchedule(int userID) {
         String sql = "SELECT 1 WHERE EXISTS (SELECT 1 FROM Schedules WHERE (DriverID=? OR MonitorID=? OR HandlingTechID=?) AND Date >= CAST(GETDATE() AS DATE)) OR EXISTS (SELECT 1 FROM TechnicianSchedules WHERE TechnicianID=? AND Date >= CAST(GETDATE() AS DATE))";
         try {
@@ -28,6 +36,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Lấy danh sách người dùng theo một vai trò cụ thể (ví dụ: "ADMIN", "DRIVER").
+     */
     public List<User> getUsersByRole(String role) {
         List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM Users WHERE Role = ? AND Status != N'Đã xóa'";
@@ -54,6 +65,10 @@ public class UserDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy danh sách người dùng theo vai trò trong một ngày cụ thể, kèm trạng thái động.
+     * Trạng thái động: "Nghỉ" (nếu có đơn xin nghỉ được duyệt), "Hoạt động" (nếu có lịch chạy/trực), "Sẵn sàng" (nếu rảnh).
+     */
     public List<User> getUsersByRoleAndDate(String role, java.sql.Date date) {
         List<User> list = new ArrayList<>();
         String sql = "SELECT u.*, " +
@@ -98,6 +113,9 @@ public class UserDAO extends DBContext {
         }
         return list;
     }
+    /**
+     * Lấy toàn bộ người dùng đang hoạt động trong hệ thống.
+     */
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM Users WHERE Status != N'Đã xóa'";
@@ -146,6 +164,9 @@ public class UserDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy thông tin chi tiết một người dùng dựa trên UserID.
+     */
     public User getUserById(int id) {
         String sql = "SELECT * FROM Users WHERE UserID = ?";
         try {
@@ -170,6 +191,9 @@ public class UserDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Lấy thông tin chi tiết một người dùng dựa trên tên đăng nhập (Username).
+     */
     public User getUserByUsername(String username) {
         String sql = "SELECT * FROM Users WHERE Username = ?";
         try {
@@ -194,6 +218,9 @@ public class UserDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Thêm một người dùng mới vào hệ thống.
+     */
     public void insertUser(User u) {
         String sql = "INSERT INTO Users (Username, Password, Role, FullName, Phone, Email, Status) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -211,6 +238,9 @@ public class UserDAO extends DBContext {
         }
     }
 
+    /**
+     * Cập nhật thông tin của người dùng.
+     */
     public void updateUser(User u) {
         String sql = "UPDATE Users SET Username=?, Password=?, Role=?, FullName=?, Phone=?, Email=?, Status=? WHERE UserID=?";
         try {
@@ -229,6 +259,9 @@ public class UserDAO extends DBContext {
         }
     }
 
+    /**
+     * Xóa mềm (Soft delete) người dùng. Đổi trạng thái thành "Đã xóa" và đổi Username/Phone để tránh trùng lặp.
+     */
     public void deleteUser(int id) {
         String sql = "UPDATE Users SET Status = N'Đã xóa', Username = CONCAT(LEFT(Username, 35), '_d', UserID), Phone = NULL WHERE UserID=?";
         try {
@@ -240,6 +273,9 @@ public class UserDAO extends DBContext {
         }
     }
 
+    /**
+     * Kiểm tra thông tin đăng nhập (Authentication) theo tài khoản, mật khẩu và vai trò.
+     */
     public boolean checkLogin(String username, String password, String role) {
         String sql = "SELECT * FROM Users WHERE Username = ? AND Password = ? AND Role = ? AND Status != N'Đã xóa'";
         try {
@@ -292,6 +328,9 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Nộp một đơn xin nghỉ phép mới cho nhân viên.
+     */
     public boolean insertUserLeave(int userID, java.sql.Date date, String reason, String status) {
         String sql = "INSERT INTO UserLeaves (UserID, LeaveDate, Reason, Status) VALUES (?, ?, ?, ?)";
         try {
@@ -322,6 +361,9 @@ public class UserDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Lấy danh sách các đơn xin nghỉ phép đang chờ duyệt (PENDING) của tất cả nhân viên.
+     */
     public List<model.UserLeave> getPendingLeaves() {
         List<model.UserLeave> list = new ArrayList<>();
         String sql = "SELECT ul.*, u.FullName, u.Role FROM UserLeaves ul JOIN Users u ON ul.UserID = u.UserID WHERE ul.Status = 'PENDING' ORDER BY ul.CreatedAt DESC";
@@ -347,6 +389,9 @@ public class UserDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Cập nhật trạng thái đơn xin nghỉ phép (Duyệt/Từ chối).
+     */
     public boolean updateLeaveStatus(int leaveID, String status) {
         String sql = "UPDATE UserLeaves SET Status = ? WHERE LeaveID = ?";
         try {
@@ -382,6 +427,9 @@ public class UserDAO extends DBContext {
         return null;
     }
 
+    /**
+     * Hủy/Xóa một đơn xin nghỉ phép của nhân viên trong một ngày cụ thể.
+     */
     public boolean deleteUserLeave(int userID, java.sql.Date date) {
         String sql = "DELETE FROM UserLeaves WHERE UserID = ? AND LeaveDate = ?";
         try {

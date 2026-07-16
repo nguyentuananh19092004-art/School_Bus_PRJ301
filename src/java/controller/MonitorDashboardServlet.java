@@ -23,8 +23,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý logic giao diện trang chủ (Dashboard) của Giám thị.
+ */
 @WebServlet(name = "MonitorDashboardServlet", urlPatterns = {"/monitor-dashboard"})
 public class MonitorDashboardServlet extends HttpServlet {
+    /**
+     * Tải thông báo chưa đọc, lấy lịch trình giám sát đang diễn ra trong ngày của Giám thị.
+     * Tính toán danh sách học sinh cần đón/trả tương ứng với từng điểm dừng và dữ liệu điểm danh.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

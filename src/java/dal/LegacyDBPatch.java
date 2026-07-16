@@ -4,9 +4,18 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Class tiện ích dùng để tự động kiểm tra và vá lỗi cấu trúc cơ sở dữ liệu.
+ * Tự động thêm các cột hoặc bảng bị thiếu để đảm bảo code chạy được trên DB cũ.
+ */
 public class LegacyDBPatch {
     private static boolean dbPatched = false;
 
+    /**
+     * Hàm kiểm tra và thực thi các câu lệnh ALTER TABLE, CREATE TABLE.
+     * Chỉ chạy một lần duy nhất trong vòng đời của ứng dụng.
+     * @param connection Đối tượng kết nối DB
+     */
     public static void checkAndPatchDatabase(Connection connection) {
         if (dbPatched || connection == null) return;
         synchronized(LegacyDBPatch.class) {

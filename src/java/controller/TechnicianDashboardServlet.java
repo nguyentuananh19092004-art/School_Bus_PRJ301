@@ -15,8 +15,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý logic giao diện trang chủ (Dashboard) của Kỹ thuật viên.
+ * Nơi theo dõi các sự cố trên đường và quản lý xe bảo dưỡng.
+ */
 @WebServlet(name = "TechnicianDashboardServlet", urlPatterns = {"/technician-dashboard"})
 public class TechnicianDashboardServlet extends HttpServlet {
+    /**
+     * Tải danh sách các chuyến xe ĐANG GẶP SỰ CỐ, danh sách xe đang được bảo dưỡng
+     * và lịch trực kỹ thuật của cá nhân trong ngày. 
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

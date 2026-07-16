@@ -12,15 +12,26 @@ import jakarta.servlet.http.HttpSession;
 import model.User;
 import util.EmailUtil;
 
+/**
+ * Servlet xử lý chức năng quên mật khẩu.
+ * Thực hiện tìm kiếm tài khoản/email, sinh mã OTP tự động và gửi qua email cho người dùng.
+ */
 @WebServlet(name = "ForgotPasswordServlet", urlPatterns = {"/ForgotPasswordServlet"})
 public class ForgotPasswordServlet extends HttpServlet {
 
+    /**
+     * Hiển thị trang yêu cầu khôi phục mật khẩu.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.getRequestDispatcher("quen_mat_khau.jsp").forward(request, response);
     }
 
+    /**
+     * Nhận yêu cầu khôi phục mật khẩu (Username).
+     * Kiểm tra sự tồn tại của Email trong DB, tạo mã OTP 6 số ngẫu nhiên và gửi OTP.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

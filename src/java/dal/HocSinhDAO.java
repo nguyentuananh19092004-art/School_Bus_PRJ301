@@ -7,8 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import model.HocSinh;
 
+/**
+ * DAO class quản lý dữ liệu Học sinh.
+ * Xử lý thông tin cá nhân, đăng ký tuyến/điểm đón, và các thay đổi lịch trình theo thời gian (EffectiveDate).
+ */
 public class HocSinhDAO extends DBContext {
 
+    /**
+     * Hàm phụ trợ kiểm tra xem ResultSet hiện tại có chứa một cột cụ thể hay không.
+     * Tránh lỗi khi gọi rs.getString() trên cột không tồn tại.
+     */
     private boolean hasColumn(ResultSet rs, String columnName) {
         try {
             rs.findColumn(columnName);
@@ -18,6 +26,9 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Ánh xạ dữ liệu từ ResultSet sang đối tượng HocSinh.
+     */
     private HocSinh mapRow(ResultSet rs) throws SQLException {
         HocSinh hs = new HocSinh();
         hs.setMaHocSinh(rs.getString("MaHocSinh"));
@@ -38,6 +49,10 @@ public class HocSinhDAO extends DBContext {
         return hs;
     }
 
+    /**
+     * Lấy toàn bộ danh sách học sinh (trừ những học sinh đã bị xóa).
+     * Sẽ gọi tự động applyPendingStopChanges() để cập nhật dữ liệu mới nhất.
+     */
     public List<HocSinh> getAllHocSinh() {
         applyPendingStopChanges();
         List<HocSinh> list = new ArrayList<>();
@@ -54,6 +69,9 @@ public class HocSinhDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy thông tin học sinh dựa trên Mã Học Sinh.
+     */
     public HocSinh getHocSinhByMa(String maHocSinh) {
         applyPendingStopChanges();
         String sql = "SELECT * FROM HocSinh WHERE MaHocSinh = ?";
@@ -157,6 +175,10 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Hủy đăng ký xe bus của học sinh (chuyển sang trạng thái ngưng hoạt động), 
+     * có hiệu lực bắt đầu từ một ngày cụ thể trong tương lai (EffectiveDate).
+     */
     public void stopService(String maHocSinh, java.sql.Date effectiveDate) {
         String sql = "UPDATE HocSinh SET PendingStopID = NULL, PendingRouteID = NULL, EffectiveDate = ? WHERE MaHocSinh = ?";
         try {
@@ -169,6 +191,9 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Hủy đăng ký xe bus của học sinh ngay lập tức.
+     */
     public void stopService(String maHocSinh) {
         String sql = "UPDATE HocSinh SET TrangThai = N'Ngưng hoạt động', DefaultStopID = NULL, DefaultRouteID = NULL, PendingStopID = NULL, PendingRouteID = NULL, EffectiveDate = NULL WHERE MaHocSinh = ?";
         try {
@@ -207,6 +232,9 @@ public class HocSinhDAO extends DBContext {
         return false;
     }
 
+    /**
+     * Đếm tổng số lượng học sinh đang sử dụng dịch vụ trên một tuyến đường hiện tại.
+     */
     public int countActiveHocSinhByRoute(int routeID) {
         String sql = "SELECT COUNT(*) FROM HocSinh WHERE DefaultRouteID = ? AND TrangThai = N'Sử dụng'";
         try {
@@ -222,6 +250,10 @@ public class HocSinhDAO extends DBContext {
         return 0;
     }
 
+    /**
+     * Đếm số lượng học sinh dự kiến sử dụng dịch vụ trên một tuyến đường vào một ngày cụ thể.
+     * Xử lý cả logic học sinh chuyển tuyến trong tương lai dựa trên EffectiveDate.
+     */
     public int countActiveHocSinhByRoute(int routeID, java.sql.Date targetDate) {
         String sql = "SELECT COUNT(*) FROM HocSinh WHERE "
                 + "( (EffectiveDate IS NOT NULL AND EffectiveDate <= ? AND PendingRouteID = ?) "
@@ -243,6 +275,10 @@ public class HocSinhDAO extends DBContext {
         return 0;
     }
 
+    /**
+     * Ghi nhận một yêu cầu thay đổi điểm đón/tuyến đường của học sinh,
+     * sẽ chính thức có hiệu lực từ ngày (EffectiveDate) được chỉ định.
+     */
     public void setPendingStopChange(String maHocSinh, int newStopID, int newRouteID, java.sql.Date effectiveDate) {
         String sql = "UPDATE HocSinh SET PendingStopID = ?, PendingRouteID = ?, EffectiveDate = ?, TrangThai = N'Sử dụng' WHERE MaHocSinh = ?";
         try {
@@ -257,6 +293,11 @@ public class HocSinhDAO extends DBContext {
         }
     }
 
+    /**
+     * Tự động duyệt qua bảng HocSinh và cập nhật các thay đổi điểm đón/tuyến đường
+     * mà ngày hiệu lực (EffectiveDate) đã đến (<= ngày hiện tại).
+     * Hàm này thường được gọi ẩn trước các thao tác truy xuất dữ liệu (GET).
+     */
     public void applyPendingStopChanges() {
         String sql = "UPDATE HocSinh SET "
                 + "TrangThai = CASE WHEN PendingRouteID IS NULL THEN N'Ngưng hoạt động' ELSE N'Sử dụng' END, "

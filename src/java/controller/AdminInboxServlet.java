@@ -13,9 +13,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý hộp thư đến của Admin (chủ yếu quản lý đơn xin nghỉ phép).
+ * Chức năng: Xem, duyệt, từ chối đơn xin nghỉ và phân công người thay thế.
+ */
 @WebServlet(name = "AdminInboxServlet", urlPatterns = {"/admin-inbox"})
 public class AdminInboxServlet extends HttpServlet {
 
+    /**
+     * Hiển thị danh sách các đơn xin nghỉ phép đang chờ duyệt.
+     * Tự động tìm kiếm và gợi ý danh sách nhân sự thay thế hợp lệ (rảnh rỗi) trong cùng ngày.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -65,6 +73,10 @@ public class AdminInboxServlet extends HttpServlet {
         request.getRequestDispatcher("admin_inbox.jsp").forward(request, response);
     }
 
+    /**
+     * Xử lý hành động Duyệt (Approve) hoặc Từ chối (Reject) đơn xin nghỉ.
+     * Nếu Duyệt: tự động cập nhật lịch trình sang người thay thế và gửi thông báo (Notification) cho các bên liên quan.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

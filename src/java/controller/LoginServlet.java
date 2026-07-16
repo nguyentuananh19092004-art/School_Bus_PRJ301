@@ -8,15 +8,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý luồng đăng nhập của tất cả người dùng hệ thống.
+ * Hỗ trợ xác thực nhiều vai trò (Admin, Giám thị, Phụ huynh, Tài xế, Kỹ thuật).
+ */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
 
+    /**
+     * Chuyển hướng người dùng truy cập trực tiếp bằng URL đến trang đăng nhập.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect("dang_nhap.jsp");
     }
 
+    /**
+     * Xử lý dữ liệu form đăng nhập. Xác thực tài khoản với CSDL và khởi tạo Session.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

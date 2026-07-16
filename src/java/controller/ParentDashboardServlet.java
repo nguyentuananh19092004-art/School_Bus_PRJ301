@@ -17,8 +17,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý logic giao diện trang chủ (Dashboard) của Phụ huynh.
+ */
 @WebServlet(name = "ParentDashboardServlet", urlPatterns = {"/parent-dashboard"})
 public class ParentDashboardServlet extends HttpServlet {
+    /**
+     * Tải thông tin học sinh (con em của phụ huynh), điểm đón hiện tại và lịch sử điểm danh.
+     * Theo dõi tiến trình của chuyến xe đang chạy theo thời gian thực (nếu xe đang hoạt động).
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

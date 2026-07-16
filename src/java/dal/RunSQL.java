@@ -3,7 +3,14 @@ package dal;
 import java.sql.Connection;
 import java.sql.Statement;
 
+/**
+ * Script tiện ích chạy độc lập (hàm main) để thực thi nhanh một số thay đổi cấu trúc SQL vào CSDL.
+ */
 public class RunSQL {
+    /**
+     * Hàm main thực thi kết nối CSDL và chạy mảng các câu lệnh SQL cài đặt sẵn.
+     * @param args Tham số dòng lệnh
+     */
     public static void main(String[] args) {
         try {
             DBContext db = new DBContext() {};

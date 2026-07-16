@@ -11,9 +11,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý chức năng nộp đơn xin nghỉ phép của nhân viên.
+ */
 @WebServlet(name = "LeaveRequestServlet", urlPatterns = {"/leave-request"})
 public class LeaveRequestServlet extends HttpServlet {
 
+    /**
+     * Xử lý dữ liệu đơn xin phép. Kiểm tra điều kiện nộp đơn (phải nộp trước 21:00 ngày hôm trước)
+     * và lưu đơn xin nghỉ vào hệ thống với trạng thái chờ duyệt (PENDING).
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

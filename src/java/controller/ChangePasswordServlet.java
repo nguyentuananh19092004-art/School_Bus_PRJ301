@@ -10,15 +10,25 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
 
+/**
+ * Servlet xử lý tính năng đổi mật khẩu cho người dùng đã đăng nhập thành công.
+ */
 @WebServlet(name = "ChangePasswordServlet", urlPatterns = {"/change-password"})
 public class ChangePasswordServlet extends HttpServlet {
 
+    /**
+     * Hiển thị giao diện form đổi mật khẩu.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect("doi_mat_khau.jsp");
     }
 
+    /**
+     * Nhận dữ liệu đổi mật khẩu. Yêu cầu kiểm tra mật khẩu cũ hợp lệ,
+     * xác nhận mật khẩu mới khớp nhau và thỏa mãn điều kiện độ phức tạp.
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

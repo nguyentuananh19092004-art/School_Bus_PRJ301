@@ -14,8 +14,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet xử lý logic giao diện trang chủ (Dashboard) của Tài xế.
+ */
 @WebServlet(name = "DriverDashboardServlet", urlPatterns = {"/driver-dashboard"})
 public class DriverDashboardServlet extends HttpServlet {
+    /**
+     * Lấy thông báo chưa đọc, truy xuất lịch trình đang diễn ra (chuyến hiện tại) của tài xế.
+     * Đồng thời tải lên thông tin về lộ trình các điểm đón/trả và tiến độ chuyến đi.
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

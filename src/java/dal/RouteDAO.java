@@ -7,8 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Route;
 
+/**
+ * DAO class quản lý dữ liệu Tuyến đường (Routes).
+ * Chịu trách nhiệm lấy thông tin các tuyến xe và kết hợp với điểm dừng.
+ */
 public class RouteDAO extends DBContext {
 
+    /**
+     * Lấy danh sách toàn bộ các tuyến đường có trong hệ thống.
+     * @return Danh sách đối tượng Route
+     */
     public List<Route> getAllRoutes() {
         List<Route> list = new ArrayList<>();
         String sql = "SELECT * FROM Routes";
@@ -30,6 +38,11 @@ public class RouteDAO extends DBContext {
         return list;
     }
 
+    /**
+     * Lấy danh sách kết hợp giữa Điểm dừng và Tuyến đường (loại trừ điểm trường học).
+     * Hàm này thường được dùng để hiển thị các tùy chọn điểm đón/trả khi gán học sinh vào tuyến.
+     * @return Danh sách các tùy chọn StopRouteOption
+     */
     public List<model.StopRouteOption> getStopRouteOptions() {
         List<model.StopRouteOption> list = new ArrayList<>();
         String sql = "SELECT s.StopID, r.RouteID, s.StopName, s.Address, r.RouteName, rs.EstimatedTime, rs.ReturnTime, s.Latitude, s.Longitude " +
