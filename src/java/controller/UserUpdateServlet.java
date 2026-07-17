@@ -70,7 +70,7 @@ public class UserUpdateServlet extends HttpServlet {
         }
 
         // 2. Kiểm tra xem Số điện thoại đã được người khác sử dụng chưa
-        if (dao.checkPhoneExist(phone, userID)) {
+        if (dao.checkPhoneExist(phone, userID, username)) {
             request.setAttribute("error", "Số điện thoại '" + phone + "' đã được người khác sử dụng!");
             request.setAttribute("userObj", new User(userID, username, password, role, fullName, phone, email, status));
             request.setAttribute("role", role);
@@ -79,7 +79,7 @@ public class UserUpdateServlet extends HttpServlet {
         }
 
         // 3. Kiểm tra xem Email đã được sử dụng chưa (ngoại trừ tài khoản hiện tại)
-        if (dao.checkEmailExist(email, userID)) {
+        if (dao.checkEmailExist(email, userID, username)) {
             request.setAttribute("error", "Email '" + email + "' đã được sử dụng bởi một tài khoản khác!");
             request.setAttribute("userObj", new User(userID, username, password, role, fullName, phone, email, status));
             request.setAttribute("role", role);

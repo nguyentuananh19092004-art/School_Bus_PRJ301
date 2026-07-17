@@ -58,7 +58,8 @@
         <% } %>
 
         <div class="table-custom">
-            <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-hover mb-0 align-middle">
+            <%-- Bảng dữ liệu hiển thị thông tin --%>
+<table class="table table-hover mb-0 align-middle">
                 <thead>
                     <tr>
                         <th class="py-3 px-4">Ngày xin nghỉ</th>

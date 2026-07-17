@@ -321,15 +321,17 @@ public class UserDAO extends DBContext {
     /**
      * Kiểm tra xem số điện thoại đã tồn tại trong hệ thống chưa, ngoại trừ một UserID cụ thể.
      */
-    public boolean checkPhoneExist(String phone, int excludeUserId) {
+    public boolean checkPhoneExist(String phone, int excludeUserId, String excludeUsername) {
         if (phone == null || phone.trim().isEmpty()) {
             return false;
         }
-        String sql = "SELECT 1 FROM Users WHERE Phone = ? AND UserID != ?";
+        String sql = "SELECT 1 WHERE EXISTS (SELECT 1 FROM Users WHERE Phone = ? AND UserID != ?) OR EXISTS (SELECT 1 FROM HocSinh WHERE Phone = ? AND TenTK != ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, phone);
             st.setInt(2, excludeUserId);
+            st.setString(3, phone);
+            st.setString(4, excludeUsername != null ? excludeUsername : "");
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return true;
@@ -515,16 +517,17 @@ public class UserDAO extends DBContext {
     /**
      * Kiểm tra xem Email đã tồn tại trong hệ thống (ở cả bảng Users và HocSinh) chưa, ngoại trừ một UserID cụ thể.
      */
-    public boolean checkEmailExist(String email, int excludeUserId) {
+    public boolean checkEmailExist(String email, int excludeUserId, String excludeUsername) {
         if (email == null || email.trim().isEmpty()) {
             return false;
         }
-        String sql = "SELECT 1 WHERE EXISTS (SELECT 1 FROM Users WHERE Email = ? AND UserID != ?) OR EXISTS (SELECT 1 FROM HocSinh WHERE Email = ?)";
+        String sql = "SELECT 1 WHERE EXISTS (SELECT 1 FROM Users WHERE Email = ? AND UserID != ?) OR EXISTS (SELECT 1 FROM HocSinh WHERE Email = ? AND TenTK != ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
             st.setInt(2, excludeUserId);
             st.setString(3, email);
+            st.setString(4, excludeUsername != null ? excludeUsername : "");
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return true;

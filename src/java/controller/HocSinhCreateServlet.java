@@ -50,6 +50,7 @@ public class HocSinhCreateServlet extends HttpServlet {
         String matKhau = request.getParameter("matKhau");
         String trangThai = request.getParameter("trangThai");
         String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
 
         int lop = 1;
         try {
@@ -58,7 +59,7 @@ public class HocSinhCreateServlet extends HttpServlet {
         }
 
         HocSinhDAO dao = new HocSinhDAO();
-        HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, null, null, trangThai, email);
+        HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, null, null, trangThai, email, phone);
 
         // 1. Kiểm tra xem Mã học sinh đã tồn tại chưa
         if (dao.getHocSinhByMa(maHocSinh) != null) {
@@ -78,8 +79,17 @@ public class HocSinhCreateServlet extends HttpServlet {
         }
 
         // 3. Kiểm tra xem Email đã tồn tại trong hệ thống (Học sinh hoặc User) chưa
-        if (dao.checkEmailExist(email, null)) {
+        if (dao.checkEmailExist(email, null, tenTK)) {
             request.setAttribute("error", "Email '" + email + "' đã được sử dụng bởi một tài khoản khác!");
+            request.setAttribute("hs", hs);
+            request.setAttribute("isCreate", true);
+            request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
+            return;
+        }
+
+        // 4. Kiểm tra xem Số điện thoại đã tồn tại trong hệ thống chưa
+        if (dao.checkPhoneExist(phone, null, tenTK)) {
+            request.setAttribute("error", "Số điện thoại '" + phone + "' đã được người khác sử dụng!");
             request.setAttribute("hs", hs);
             request.setAttribute("isCreate", true);
             request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);

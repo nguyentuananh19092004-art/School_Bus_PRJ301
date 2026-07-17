@@ -70,7 +70,7 @@ public class UserCreateServlet extends HttpServlet {
         }
 
         // 2. Kiểm tra xem số điện thoại đã được đăng ký cho người khác chưa
-        if (dao.checkPhoneExist(phone, 0)) {
+        if (dao.checkPhoneExist(phone, 0, username)) {
             request.setAttribute("error", "Số điện thoại '" + phone + "' đã được người khác sử dụng!");
             request.setAttribute("userObj", new User(0, username, password, role, fullName, phone, email, status));
             request.setAttribute("role", role);
@@ -79,7 +79,7 @@ public class UserCreateServlet extends HttpServlet {
         }
 
         // 3. Kiểm tra xem email đã tồn tại trong hệ thống chưa (cả bảng User và Học sinh)
-        if (dao.checkEmailExist(email, 0)) {
+        if (dao.checkEmailExist(email, 0, username)) {
             request.setAttribute("error", "Email '" + email + "' đã được sử dụng bởi một tài khoản khác!");
             request.setAttribute("userObj", new User(0, username, password, role, fullName, phone, email, status));
             request.setAttribute("role", role);

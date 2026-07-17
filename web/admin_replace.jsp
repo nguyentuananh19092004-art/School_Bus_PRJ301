@@ -72,7 +72,8 @@
                      
                      if (isTech) {
                  %>
-                 <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-bordered table-striped align-middle">
+                 <%-- Bảng dữ liệu hiển thị thông tin --%>
+<table class="table table-bordered table-striped align-middle">
                      <thead class="table-dark">
                          <tr>
                              <th>ID Ca</th>
@@ -116,7 +117,8 @@
                      </tbody>
                  </table>
                  <% } else { %>
-                 <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-bordered table-striped align-middle">
+                 <%-- Bảng dữ liệu hiển thị thông tin --%>
+<table class="table table-bordered table-striped align-middle">
                      <thead class="table-dark">
                          <tr>
                              <th>ID Chuyến</th>

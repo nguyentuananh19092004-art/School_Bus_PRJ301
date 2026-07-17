@@ -41,6 +41,7 @@ public class HocSinhDAO extends DBContext {
         if (hasColumn(rs, "DefaultRouteID") && rs.getObject("DefaultRouteID") != null) hs.setDefaultRouteID(rs.getInt("DefaultRouteID"));
         if (hasColumn(rs, "TrangThai")) hs.setTrangThai(rs.getString("TrangThai"));
         if (hasColumn(rs, "Email")) hs.setEmail(rs.getString("Email"));
+        if (hasColumn(rs, "Phone")) hs.setPhone(rs.getString("Phone"));
         
         if (hasColumn(rs, "PendingStopID") && rs.getObject("PendingStopID") != null) hs.setPendingStopID(rs.getInt("PendingStopID"));
         if (hasColumn(rs, "PendingRouteID") && rs.getObject("PendingRouteID") != null) hs.setPendingRouteID(rs.getInt("PendingRouteID"));
@@ -131,7 +132,7 @@ public class HocSinhDAO extends DBContext {
      * Thêm một hồ sơ học sinh mới vào hệ thống.
      */
     public void insertHocSinh(HocSinh hs) {
-        String sql = "INSERT INTO HocSinh (MaHocSinh, TenHocSinh, Lop, TenTK, MatKhau, DefaultStopID, DefaultRouteID, TrangThai, Email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO HocSinh (MaHocSinh, TenHocSinh, Lop, TenTK, MatKhau, DefaultStopID, DefaultRouteID, TrangThai, Email, Phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, hs.getMaHocSinh());
@@ -151,6 +152,7 @@ public class HocSinhDAO extends DBContext {
             }
             st.setString(8, hs.getTrangThai());
             st.setString(9, hs.getEmail());
+            st.setString(10, hs.getPhone());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -161,7 +163,7 @@ public class HocSinhDAO extends DBContext {
      * Cập nhật thông tin hồ sơ của học sinh (không cập nhật thay đổi tuyến đường tương lai).
      */
     public void updateHocSinh(HocSinh hs) {
-        String sql = "UPDATE HocSinh SET TenHocSinh = ?, Lop = ?, TenTK = ?, MatKhau = ?, DefaultStopID = ?, DefaultRouteID = ?, TrangThai = ?, Email = ? WHERE MaHocSinh = ?";
+        String sql = "UPDATE HocSinh SET TenHocSinh = ?, Lop = ?, TenTK = ?, MatKhau = ?, DefaultStopID = ?, DefaultRouteID = ?, TrangThai = ?, Email = ?, Phone = ? WHERE MaHocSinh = ?";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, hs.getTenHocSinh());
@@ -180,7 +182,8 @@ public class HocSinhDAO extends DBContext {
             }
             st.setString(7, hs.getTrangThai());
             st.setString(8, hs.getEmail());
-            st.setString(9, hs.getMaHocSinh());
+            st.setString(9, hs.getPhone());
+            st.setString(10, hs.getMaHocSinh());
             st.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -350,16 +353,41 @@ public class HocSinhDAO extends DBContext {
     /**
      * Kiểm tra xem Email đã tồn tại trong hệ thống (ở cả bảng HocSinh và Users) chưa, ngoại trừ một MaHocSinh cụ thể.
      */
-    public boolean checkEmailExist(String email, String excludeMaHocSinh) {
+    public boolean checkEmailExist(String email, String excludeMaHocSinh, String tenTK) {
         if (email == null || email.trim().isEmpty()) {
             return false;
         }
-        String sql = "SELECT 1 WHERE EXISTS (SELECT 1 FROM HocSinh WHERE Email = ? AND MaHocSinh != ?) OR EXISTS (SELECT 1 FROM Users WHERE Email = ?)";
+        String sql = "SELECT 1 WHERE EXISTS (SELECT 1 FROM HocSinh WHERE Email = ? AND MaHocSinh != ?) OR EXISTS (SELECT 1 FROM Users WHERE Email = ? AND Username != ?)";
         try {
             PreparedStatement st = connection.prepareStatement(sql);
             st.setString(1, email);
             st.setString(2, excludeMaHocSinh != null ? excludeMaHocSinh : "");
             st.setString(3, email);
+            st.setString(4, tenTK != null ? tenTK : "");
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
+    }
+
+    /**
+     * Kiểm tra xem Số điện thoại đã tồn tại trong hệ thống chưa, ngoại trừ một MaHocSinh cụ thể.
+     */
+    public boolean checkPhoneExist(String phone, String excludeMaHocSinh, String tenTK) {
+        if (phone == null || phone.trim().isEmpty()) {
+            return false;
+        }
+        String sql = "SELECT 1 WHERE EXISTS (SELECT 1 FROM HocSinh WHERE Phone = ? AND MaHocSinh != ?) OR EXISTS (SELECT 1 FROM Users WHERE Phone = ? AND Username != ?)";
+        try {
+            PreparedStatement st = connection.prepareStatement(sql);
+            st.setString(1, phone);
+            st.setString(2, excludeMaHocSinh != null ? excludeMaHocSinh : "");
+            st.setString(3, phone);
+            st.setString(4, tenTK != null ? tenTK : "");
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return true;

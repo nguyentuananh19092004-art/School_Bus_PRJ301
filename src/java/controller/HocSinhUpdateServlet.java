@@ -57,6 +57,7 @@ public class HocSinhUpdateServlet extends HttpServlet {
         String matKhau = request.getParameter("matKhau");
         String trangThai = request.getParameter("trangThai");
         String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
 
         int lop = 1;
         try {
@@ -76,8 +77,17 @@ public class HocSinhUpdateServlet extends HttpServlet {
             return;
         }
 
-        if (dao.checkEmailExist(email, maHocSinh)) {
+        if (dao.checkEmailExist(email, maHocSinh, tenTK)) {
             request.setAttribute("error", "Email '" + email + "' đã được sử dụng bởi một tài khoản khác!");
+            HocSinh hsError = dao.getHocSinhByMa(maHocSinh);
+            request.setAttribute("hs", hsError);
+            // Trả kết quả về cho View (JSP) hiển thị
+        request.getRequestDispatcher("hocsinh_form.jsp").forward(request, response);
+            return;
+        }
+
+        if (dao.checkPhoneExist(phone, maHocSinh, tenTK)) {
+            request.setAttribute("error", "Số điện thoại '" + phone + "' đã được người khác sử dụng!");
             HocSinh hsError = dao.getHocSinhByMa(maHocSinh);
             request.setAttribute("hs", hsError);
             // Trả kết quả về cho View (JSP) hiển thị
@@ -99,7 +109,7 @@ public class HocSinhUpdateServlet extends HttpServlet {
         Integer defaultStopID = oldHs != null ? oldHs.getDefaultStopID() : null;
         Integer defaultRouteID = oldHs != null ? oldHs.getDefaultRouteID() : null;
 
-        HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, defaultStopID, defaultRouteID, trangThai, email);
+        HocSinh hs = new HocSinh(maHocSinh, tenHocSinh, lop, tenTK, matKhau, defaultStopID, defaultRouteID, trangThai, email, phone);
         dao.updateHocSinh(hs);
 
         // Chuyển hướng (Redirect) người dùng đến trang khác

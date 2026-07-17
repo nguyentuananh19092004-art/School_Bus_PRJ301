@@ -22,13 +22,16 @@
                 <strong>Thông báo:</strong> Dịch vụ ngưng hoạt động từ ngày mai. Trạng thái học sinh đã chuyển về "Ngưng hoạt động".
             </div>
         </c:if>
-        <%-- Bảng dữ liệu hiển thị thông tin --%>n<table class="table table-bordered table-striped">
+        <%-- Bảng dữ liệu hiển thị thông tin --%>
+        <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
                     <th>Mã HS</th>
                     <th>Tên Học Sinh</th>
                     <th>Lớp</th>
                     <th>Tài Khoản PH</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
                     <th>Tuyến Điểm Mặc Định</th>
                     <th>Trạng Thái</th>
                     <th>Hành động</th>
@@ -41,6 +44,8 @@
                         <td>${hs.tenHocSinh}</td>
                         <td>Lớp ${hs.lop}</td>
                         <td>${hs.tenTK}</td>
+                        <td>${hs.email != null ? hs.email : '<span class="text-muted">Chưa cập nhật</span>'}</td>
+                        <td>${hs.phone != null ? hs.phone : '<span class="text-muted">Chưa cập nhật</span>'}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${hs.defaultRouteID != null && hs.defaultRouteID != 0}">

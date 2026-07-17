@@ -10,6 +10,7 @@ public class HocSinh {
     private Integer defaultRouteID;
     private String trangThai;
     private String email;
+    private String phone;
     
     // Pending fields for changing stop
     private Integer pendingStopID;
@@ -19,7 +20,7 @@ public class HocSinh {
     public HocSinh() {
     }
 
-    public HocSinh(String maHocSinh, String tenHocSinh, int lop, String tenTK, String matKhau, Integer defaultStopID, Integer defaultRouteID, String trangThai, String email) {
+    public HocSinh(String maHocSinh, String tenHocSinh, int lop, String tenTK, String matKhau, Integer defaultStopID, Integer defaultRouteID, String trangThai, String email, String phone) {
         this.maHocSinh = maHocSinh;
         this.tenHocSinh = tenHocSinh;
         this.lop = lop;
@@ -29,6 +30,7 @@ public class HocSinh {
         this.defaultRouteID = defaultRouteID;
         this.trangThai = trangThai;
         this.email = email;
+        this.phone = phone;
     }
 
     public String getMaHocSinh() {
@@ -125,5 +127,13 @@ public class HocSinh {
 
     public void setEffectiveDate(java.sql.Date effectiveDate) {
         this.effectiveDate = effectiveDate;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

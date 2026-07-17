@@ -23,7 +23,7 @@
                 <div class="alert alert-danger fw-bold"><%= error %></div>
             <% } %>
             <%-- Form xử lý nhập liệu / gửi dữ liệu lên Server --%>
-<form action="<%= isUpdate ? "hocsinh-edit" : "hocsinh-add" %>" method="POST">
+            <form action="<%= isUpdate ? "hocsinh-edit" : "hocsinh-add" %>" method="POST">
                 <div class="mb-3">
                     <label>Mã Học Sinh</label>
                     <input type="text" name="maHocSinh" value="<%= isUpdate ? hs.getMaHocSinh() : "" %>" class="form-control" <%= isUpdate ? "readonly" : "required" %>/>
@@ -47,6 +47,10 @@
                 <div class="mb-3">
                     <label>Email liên hệ</label>
                     <input type="email" name="email" value="<%= isUpdate && hs.getEmail() != null ? hs.getEmail() : "" %>" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label>Số điện thoại</label>
+                    <input type="text" name="phone" value="<%= isUpdate && hs.getPhone() != null ? hs.getPhone() : "" %>" class="form-control" />
                 </div>
                 <div class="mb-3">
                     <label>Trạng Thái</label>
